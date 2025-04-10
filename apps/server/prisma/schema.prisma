@@ -1,0 +1,263 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  username  String    @unique @map("user_name") // 用户名
+  email     String?   @unique // 邮箱
+  phone     String?   @unique // 电话号码，改为String类型
+  realName  String?   @map("real_name") // 真实姓名
+  avatar    String? // 头像 URL
+  password  String // 密码 (生产环境请务必使用 bcrypt 加密存储)
+  isActive  Boolean   @default(true) @map("is_active") // 是否启用
+  createdAt DateTime  @default(now()) @map("created_at") // 创建时间
+  updatedAt DateTime  @updatedAt @map("updated_at") // 更新时间
+  deletedAt DateTime? @map("deleted_at") // 删除时间 (软删除)
+
+  // 关系
+  userRoles         UserRole[] // 用户和用户角色是 1:N 的关系
+  distributionSales Distribution[] //用户是销售 1:N的关系
+
+  @@map("users") // 修改表名为users
+}
+
+model Role {
+  id          String   @id @default(uuid())
+  name        String   @unique() @map("role_name") // 角色名称
+  description String?  @map("role_desc") // 角色描述
+  isActive    Boolean  @default(true) @map("is_active") // 是否启用
+  createdAt   DateTime @default(now()) @map("created_at") // 创建时间
+  updatedAt   DateTime @updatedAt @map("updated_at") // 更新时间
+
+  // 关系
+  rolePermissions RolePermission[] // 角色和角色权限是 1:N 的关系
+  userRoles       UserRole[] // 角色和用户角色是 1:N 的关系
+
+  @@map("roles") // 修改表名为roles
+}
+
+model UserRole {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id") // 用户id
+  roleId    String   @map("role_id") // 角色id
+  createdAt DateTime @default(now()) @map("created_at") // 创建时间
+  updatedAt DateTime @updatedAt @map("updated_at") // 更新时间
+
+  // 关系
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade) // 用户角色和用户是 1:1 的关系（外键）
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade) // 用户角色和角色是 1:1 的关系（外键）
+
+  @@unique([userId, roleId]) // 联合唯一索引，防止重复关联
+  @@map("user_roles") // 用户角色关系表
+}
+
+model Permission {
+  id          String   @id @default(uuid())
+  name        String // 权限名称
+  code        String // 权限代码 (用于代码中校验权限)
+  description String?  @map("permission_desc") // 权限描述
+  isActive    Boolean  @default(true) @map("is_active") // 是否启用
+  createdAt   DateTime @default(now()) @map("created_at") // 创建时间
+  updatedAt   DateTime @updatedAt @map("updated_at") // 更新时间
+
+  // 关系
+  rolePermissions RolePermission[] // 权限和角色权限是 1:N 的关系
+
+  @@map("permissions") // 权限表
+}
+
+model RolePermission {
+  id           String   @id @default(uuid())
+  roleId       String   @map("role_id") // 角色id
+  permissionId String   @map("permission_id") // 权限id
+  isActive     Boolean  @default(true) @map("is_active") // 是否启用
+  createdAt    DateTime @default(now()) @map("created_at") // 创建时间
+  updatedAt    DateTime @updatedAt @map("updated_at") // 更新时间
+
+  // 关系
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade) // 角色权限和角色是 1:1 的关系（外键）
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade, onUpdate: Cascade) // 角色权限和权限是 1:1 的关系（外键）
+
+  @@unique([roleId, permissionId]) // 联合唯一索引，防止重复关联
+  @@map("role_permissions") // 角色权限关系表
+}
+
+model CommodityCategory {
+  id          String   @id @default(uuid())
+  name        String // 分类名称
+  description String?  @map("category_desc") // 分类描述
+  isDisplayed Boolean? @map("is_displayed") // 是否显示
+  isActive    Boolean? @default(true) @map("is_active") // 是否启用
+  createdAt   DateTime @default(now()) @map("created_at") // 创建时间
+  updatedAt   DateTime @updatedAt @map("updated_at") // 更新时间
+
+  // 关系
+  commodities Commodity[] // 商品分类和商品是 1:N 的关系
+
+  @@map("commodity_categories") // 商品分类表
+}
+
+model Commodity {
+  id          String   @id @default(uuid())
+  name        String // 商品名称
+  description String? // 商品描述
+  price       Decimal  @default(0) // 商品价格
+  stock       Int      @default(0) // 商品库存
+  mainImage   String? // 主图url
+  categoryId  String   @map("category_id") // 商品分类id
+  isActive    Boolean  @default(true) @map("is_active") // 是否启用
+  createdAt   DateTime @default(now()) @map("created_at") // 创建时间
+  updatedAt   DateTime @updatedAt @map("updated_at") // 更新时间
+
+  // 关系
+  category   CommodityCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade) // 商品和商品分类是 1:1 的关系（外键）
+  orderItems OrderItem[] // 商品和订单项是 1:N 的关系
+  cartItems  CartItem[] // 商品和购物车是 1:N 的关系
+  images     CommodityImage[] // 商品和商品图片是1:N的关系
+
+  @@map("commodities") // 商品表
+}
+
+model CommodityImage {
+  id        String  @id @default(uuid())
+  image     String
+  sortOrder Int     @default(1)
+  alt       String?
+
+  Commodity   Commodity? @relation(fields: [commodityId], references: [id], onDelete: NoAction, onUpdate: NoAction) // 禁止级联删除和更新，防止误删商品图片
+  commodityId String?
+
+  @@map("commodity_images")
+}
+
+model Consumer {
+  id        String    @id @default(uuid())
+  phone     String    @unique // 电话号码，改为String
+  username  String? // 用户名
+  avatar    String? // 头像 URL
+  password  String? // 密码 (生产环境请务必使用 bcrypt 加密存储)
+  frontCard String?   @map("front_card") // 身份证正面照片 URL
+  backCard  String?   @map("back_card") // 身份证反面照片 URL
+  userCard  String?   @map("user_card") // 手持身份证照片 URL
+  createdAt DateTime  @default(now()) @map("created_at") // 创建时间
+  updatedAt DateTime  @updatedAt @map("updated_at") // 更新时间
+  deletedAt DateTime? @map("deleted_at") // 删除时间 (软删除)
+
+  // 关系
+  addresses             Address[] // 用户和地址是 1:N 的关系
+  orders                Order[] // 用户和订单是 1:N 的关系
+  cartItems             CartItem[] // 用户和购物车是 1:N 的关系
+  distributionCustomers Distribution[] //用户是客户 1:N的关系
+
+  @@map("consumers") // 消费者表
+}
+
+model Address {
+  id         String   @id @default(uuid())
+  consumerId String   @map("consumer_id") // 用户id
+  province   String // 省份
+  city       String // 城市
+  district   String // 区域
+  detail     String // 详细地址
+  isDefault  Boolean  @default(false) @map("is_default") // 是否是默认地址
+  createdAt  DateTime @default(now()) @map("created_at") // 创建时间
+  updatedAt  DateTime @updatedAt @map("updated_at") // 更新时间
+
+  // 关系
+  consumer Consumer @relation(fields: [consumerId], references: [id], onDelete: Cascade, onUpdate: Cascade) // 地址和用户是 1:1 的关系（外键）
+  Order    Order[]
+
+  @@map("address") // 用户地址表
+}
+
+model CartItem {
+  id          String   @id @default(uuid())
+  consumerId  String   @map("consumer_id") // 用户id
+  commodityId String   @map("commodity_id") // 商品id
+  quantity    Int      @default(1) // 商品数量
+  createdAt   DateTime @default(now()) @map("created_at") // 创建时间
+  updatedAt   DateTime @updatedAt @map("updated_at") // 更新时间
+
+  // 关系
+  consumer  Consumer  @relation(fields: [consumerId], references: [id], onDelete: Cascade, onUpdate: Cascade) // 购物车和用户是 1:1 的关系（外键）
+  commodity Commodity @relation(fields: [commodityId], references: [id], onDelete: Cascade, onUpdate: Cascade) // 购物车和商品是 1:1 的关系（外键）
+
+  @@unique([consumerId, commodityId]) // 联合唯一索引，保证一个用户只能添加一个商品到购物车
+  @@map("cart_items") // 购物车表
+}
+
+model Order {
+  id            String        @id @default(uuid())
+  orderNumber   String        @unique @map("order_number") // 订单号
+  consumerId    String        @map("consumer_id") // 用户id
+  addressId     String        @map("address_id") // 地址id
+  totalPrice    Decimal // 订单总价
+  status        OrderStatus   @default(PENDING) // 订单状态
+  paymentMethod PaymentMethod @default(WECHAT) // 支付方式
+  createdAt     DateTime      @default(now()) @map("created_at") // 创建时间
+  updatedAt     DateTime      @updatedAt @map("updated_at") // 更新时间
+
+  // 关系
+  consumer   Consumer    @relation(fields: [consumerId], references: [id], onDelete: Cascade, onUpdate: Cascade) // 订单和用户是 1:1 的关系（外键）
+  address    Address     @relation(fields: [addressId], references: [id], onDelete: Cascade, onUpdate: Cascade) // 订单和地址是 1:1 的关系（外键）
+  orderItems OrderItem[] // 订单和订单项是 1:N 的关系
+
+  @@map("orders") // 订单表
+}
+
+model OrderItem {
+  id          String   @id @default(uuid())
+  orderId     String   @map("order_id") // 订单id
+  commodityId String   @map("commodity_id") // 商品id
+  quantity    Int // 商品数量
+  price       Decimal // 商品价格
+  createdAt   DateTime @default(now()) @map("created_at") // 创建时间
+  updatedAt   DateTime @updatedAt @map("updated_at") // 更新时间
+
+  // 关系
+  order     Order     @relation(fields: [orderId], references: [id], onDelete: Cascade, onUpdate: Cascade) // 订单项和订单是 1:1 的关系（外键）
+  commodity Commodity @relation(fields: [commodityId], references: [id], onDelete: Cascade, onUpdate: Cascade) // 订单项和商品是 1:1 的关系（外键）
+
+  @@map("order_items") // 订单项表
+}
+
+model Distribution {
+  id         String   @id @default(uuid())
+  salesId    String   @map("sales_id") // 销售人员id
+  customerId String   @map("customer_id") // 客户id
+  createdAt  DateTime @default(now()) @map("created_at") // 创建时间
+  updatedAt  DateTime @updatedAt @map("updated_at") // 更新时间
+
+  //关系
+  sales    User     @relation(fields: [salesId], references: [id], onDelete: Cascade, onUpdate: Cascade) //销售人员
+  customer Consumer @relation(fields: [customerId], references: [id], onDelete: Cascade, onUpdate: Cascade) //客户
+
+  @@map("distributions") // 分销表
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  WECHAT
+  ALIPAY
+  CREDIT_CARD
+}
