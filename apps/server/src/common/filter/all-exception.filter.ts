@@ -66,11 +66,32 @@ export class AllExceptionsFilter implements ExceptionFilter {
       };
     }
 
-    // Log the error with context information
+    // 获取请求信息
+    const ip = request.ip || request.connection.remoteAddress;
+    const user = request['user'] as AuthPayload; // 从请求中获取用户信息（如果有）
+    const userId = user?.sub;
+    const requestId =
+      request.headers['x-request-id'] ||
+      `req_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+
+    // 记录错误信息
     this.logger.error(
-      `${request.method} ${request.url} - ${status} - ${message}`,
+      `异常: ${request.method} ${request.url} - ${status} - ${message}`,
       exception instanceof Error ? exception.stack : undefined,
-      'ExceptionsFilter',
+      {
+        context: 'ExceptionsFilter',
+        requestId: requestId as string,
+        userId: userId,
+        ip,
+        path: request.url,
+        method: request.method,
+        errorName: exception instanceof Error ? exception.name : 'UnknownError',
+        errorCode: status,
+        errorType: exception?.constructor?.name,
+        query: request.query ? JSON.stringify(request.query) : undefined,
+        params: request.params ? JSON.stringify(request.params) : undefined,
+        body: request.body ? JSON.stringify(request.body) : undefined,
+      },
     );
 
     // Always return HTTP status 200, but include error code in response body

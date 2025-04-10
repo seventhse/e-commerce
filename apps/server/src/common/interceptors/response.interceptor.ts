@@ -29,11 +29,27 @@ export class ResponseInterceptor<T>
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { method, url, body } = request;
 
-    // Log the request
-    this.logger.log(`Request: ${method} ${url}`);
-    if (method !== 'GET' && body) {
-      this.logger.debug(`Request Body: \n ${JSON.stringify(body, null, 2)}`);
-    }
+    // 获取请求信息
+    const ip = request.ip || request.connection.remoteAddress;
+    const user = request['user']; // 从请求中获取用户信息（如果有）
+    const userId = user?.sub;
+    const requestId = request.headers['x-request-id'] || `req_${Date.now()}_${Math.random().toString(36).substring(2, 10)}`;
+
+    // 设置请求上下文信息
+    this.logger.setRequestContext({
+      requestId: requestId as string,
+      userId,
+      ip,
+      path: url,
+      method,
+    });
+
+    // 记录请求信息
+    this.logger.log(`请求开始: ${method} ${url}`, {
+      params: request.params ? JSON.stringify(request.params) : undefined,
+      query: request.query ? JSON.stringify(request.query) : undefined,
+      body: method !== 'GET' && body ? JSON.stringify(body, null, 2) : undefined,
+    });
     context.switchToHttp().getResponse<Response>().status(HttpStatus.OK);
 
     const now = Date.now();
@@ -48,8 +64,16 @@ export class ResponseInterceptor<T>
           timestamp: new Date().toISOString(),
         };
 
-        // Log the response time
-        this.logger.log(`Response: ${method} ${url} - ${Date.now() - now}ms`);
+        // 记录响应时间和信息
+        const duration = Date.now() - now;
+        this.logger.log(`请求完成: ${method} ${url} - ${duration}ms`, {
+          duration,
+          statusCode: 200,
+          dataType: data ? typeof data : 'null',
+        });
+
+        // 清除请求上下文
+        this.logger.clearRequestContext();
         return response;
       }),
       // Handle exceptions
@@ -77,13 +101,23 @@ export class ResponseInterceptor<T>
             ? response['code']
             : status;
 
-        // Log the error
+        // 记录错误信息
+        const duration = Date.now() - now;
         this.logger.error(
-          `Error: ${method} ${url} - ${status} - ${
+          `请求失败: ${method} ${url} - ${status} - ${
             Array.isArray(message) ? message.join(', ') : message
           }`,
           error instanceof Error ? error.stack : undefined,
+          {
+            duration,
+            errorName: error.name || 'UnknownError',
+            errorCode: status,
+            errorType: error.constructor.name,
+          }
         );
+
+        // 清除请求上下文
+        this.logger.clearRequestContext();
 
         // Set HTTP status to 200 but include error code in response
         context.switchToHttp().getResponse<Response>().status(HttpStatus.OK);
