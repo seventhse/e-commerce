@@ -1,121 +1,3094 @@
 {
   "openapi": "3.0.0",
+  "paths": {
+    "/api/v1/manage/auth/signIn": {
+      "post": {
+        "operationId": "AuthController_signIn",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignInDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "登录成功"
+          },
+          "401": {
+            "description": "用户名或密码错误"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "用户登录",
+        "tags": [
+          "认证管理"
+        ]
+      }
+    },
+    "/api/v1/manage/auth/signOut": {
+      "get": {
+        "operationId": "AuthController_signOut",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "登出成功"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "用户登出",
+        "tags": [
+          "认证管理"
+        ]
+      }
+    },
+    "/api/v1/manage/auth/getUserInfo": {
+      "get": {
+        "operationId": "AuthController_getUserInfo",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功获取用户信息"
+          },
+          "404": {
+            "description": "用户不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取当前用户信息",
+        "tags": [
+          "认证管理"
+        ]
+      }
+    },
+    "/api/v1/manage/auth/refreshToken": {
+      "get": {
+        "operationId": "AuthController_refreshToken",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功刷新令牌"
+          },
+          "401": {
+            "description": "令牌已过期或无效"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "刷新访问令牌",
+        "tags": [
+          "认证管理"
+        ]
+      }
+    },
+    "/api/v1/manage/addresses/list": {
+      "get": {
+        "operationId": "AddressController_list",
+        "parameters": [
+          {
+            "name": "province",
+            "required": false,
+            "in": "query",
+            "description": "省份",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "city",
+            "required": false,
+            "in": "query",
+            "description": "城市",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "district",
+            "required": false,
+            "in": "query",
+            "description": "区/县",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "detail",
+            "required": false,
+            "in": "query",
+            "description": "详细地址",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isDefault",
+            "required": false,
+            "in": "query",
+            "description": "是否默认地址",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "consumerId",
+            "required": false,
+            "in": "query",
+            "description": "客户ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取地址列表"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取地址列表",
+        "tags": [
+          "地址管理"
+        ]
+      }
+    },
+    "/api/v1/manage/addresses/page": {
+      "get": {
+        "operationId": "AddressController_page",
+        "parameters": [
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "description": "页码",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "description": "每页数量",
+            "schema": {
+              "minimum": 1,
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "province",
+            "required": false,
+            "in": "query",
+            "description": "省份",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "city",
+            "required": false,
+            "in": "query",
+            "description": "城市",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "district",
+            "required": false,
+            "in": "query",
+            "description": "区/县",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "detail",
+            "required": false,
+            "in": "query",
+            "description": "详细地址",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isDefault",
+            "required": false,
+            "in": "query",
+            "description": "是否默认地址",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "consumerId",
+            "required": false,
+            "in": "query",
+            "description": "客户ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取地址分页数据"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "分页获取地址列表",
+        "tags": [
+          "地址管理"
+        ]
+      }
+    },
+    "/api/v1/manage/addresses/detail/{id}": {
+      "get": {
+        "operationId": "AddressController_detail",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取地址详情"
+          },
+          "404": {
+            "description": "地址不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取地址详情",
+        "tags": [
+          "地址管理"
+        ]
+      }
+    },
+    "/api/v1/manage/addresses/create": {
+      "post": {
+        "operationId": "AddressController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAddressDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "地址创建成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "创建地址",
+        "tags": [
+          "地址管理"
+        ]
+      }
+    },
+    "/api/v1/manage/addresses/update": {
+      "post": {
+        "operationId": "AddressController_update",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAddressDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "地址更新成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          },
+          "404": {
+            "description": "地址不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "更新地址",
+        "tags": [
+          "地址管理"
+        ]
+      }
+    },
+    "/api/v1/manage/addresses/delete": {
+      "post": {
+        "operationId": "AddressController_delete",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "地址删除成功"
+          },
+          "400": {
+            "description": "删除地址失败"
+          },
+          "404": {
+            "description": "地址不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "删除地址",
+        "tags": [
+          "地址管理"
+        ]
+      }
+    },
+    "/api/v1/manage/users/list": {
+      "get": {
+        "operationId": "UserController_list",
+        "parameters": [
+          {
+            "name": "username",
+            "required": false,
+            "in": "query",
+            "description": "用户名",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "required": false,
+            "in": "query",
+            "description": "邮箱",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "phone",
+            "required": false,
+            "in": "query",
+            "description": "手机号",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "realName",
+            "required": false,
+            "in": "query",
+            "description": "真实姓名",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isActive",
+            "required": false,
+            "in": "query",
+            "description": "是否激活",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取用户列表"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取用户列表",
+        "tags": [
+          "用户管理"
+        ]
+      }
+    },
+    "/api/v1/manage/users/page": {
+      "get": {
+        "operationId": "UserController_page",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功获取用户分页数据"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "分页获取用户列表",
+        "tags": [
+          "用户管理"
+        ]
+      }
+    },
+    "/api/v1/manage/users/detail/{id}": {
+      "get": {
+        "operationId": "UserController_detail",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取用户详情"
+          },
+          "404": {
+            "description": "用户不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取用户详情",
+        "tags": [
+          "用户管理"
+        ]
+      }
+    },
+    "/api/v1/manage/users/create": {
+      "post": {
+        "operationId": "UserController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "用户创建成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "创建用户",
+        "tags": [
+          "用户管理"
+        ]
+      }
+    },
+    "/api/v1/manage/users/update": {
+      "post": {
+        "operationId": "UserController_update",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "用户更新成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          },
+          "404": {
+            "description": "用户不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "更新用户",
+        "tags": [
+          "用户管理"
+        ]
+      }
+    },
+    "/api/v1/manage/users/delete": {
+      "post": {
+        "operationId": "UserController_delete",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "用户删除成功"
+          },
+          "400": {
+            "description": "删除用户失败"
+          },
+          "404": {
+            "description": "用户不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "删除用户",
+        "tags": [
+          "用户管理"
+        ]
+      }
+    },
+    "/api/v1/manage/users/updatePassword": {
+      "post": {
+        "operationId": "UserController_updatePassword",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePasswordDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "密码更新成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          },
+          "404": {
+            "description": "用户不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "更新用户密码",
+        "tags": [
+          "用户管理"
+        ]
+      }
+    },
+    "/api/v1/manage/users/grant": {
+      "post": {
+        "operationId": "UserController_grant",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GrantUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "授权成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          },
+          "404": {
+            "description": "用户或角色不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "授予用户角色",
+        "tags": [
+          "用户管理"
+        ]
+      }
+    },
+    "/api/v1/manage/users/revoke": {
+      "post": {
+        "operationId": "UserController_revoke",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevokeUserDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "撤销授权成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          },
+          "404": {
+            "description": "用户或角色不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "撤销用户角色",
+        "tags": [
+          "用户管理"
+        ]
+      }
+    },
+    "/api/v1/manage/consumers/list": {
+      "get": {
+        "operationId": "ConsumerController_list",
+        "parameters": [
+          {
+            "name": "phone",
+            "required": false,
+            "in": "query",
+            "description": "手机号码",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "username",
+            "required": false,
+            "in": "query",
+            "description": "用户名",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取客户列表"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取客户列表",
+        "tags": [
+          "客户管理"
+        ]
+      }
+    },
+    "/api/v1/manage/consumers/page": {
+      "get": {
+        "operationId": "ConsumerController_page",
+        "parameters": [
+          {
+            "name": "phone",
+            "required": false,
+            "in": "query",
+            "description": "手机号码",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "username",
+            "required": false,
+            "in": "query",
+            "description": "用户名",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "description": "页码",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "description": "每页数量",
+            "schema": {
+              "minimum": 1,
+              "default": 10,
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取客户分页数据"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "分页获取客户列表",
+        "tags": [
+          "客户管理"
+        ]
+      }
+    },
+    "/api/v1/manage/consumers/detail/{id}": {
+      "get": {
+        "operationId": "ConsumerController_detail",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取客户详情"
+          },
+          "404": {
+            "description": "客户不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取客户详情",
+        "tags": [
+          "客户管理"
+        ]
+      }
+    },
+    "/api/v1/manage/consumers/create": {
+      "post": {
+        "operationId": "ConsumerController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateConsumerDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "客户创建成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "创建客户",
+        "tags": [
+          "客户管理"
+        ]
+      }
+    },
+    "/api/v1/manage/consumers/update": {
+      "post": {
+        "operationId": "ConsumerController_update",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateConsumerDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "客户更新成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          },
+          "404": {
+            "description": "客户不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "更新客户",
+        "tags": [
+          "客户管理"
+        ]
+      }
+    },
+    "/api/v1/manage/consumers/delete": {
+      "post": {
+        "operationId": "ConsumerController_delete",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "客户删除成功"
+          },
+          "400": {
+            "description": "删除客户失败"
+          },
+          "404": {
+            "description": "客户不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "删除客户",
+        "tags": [
+          "客户管理"
+        ]
+      }
+    },
+    "/api/v1/manage/permission/list": {
+      "get": {
+        "operationId": "PermissionController_findAll",
+        "parameters": [
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "权限名称",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "code",
+            "required": false,
+            "in": "query",
+            "description": "权限编码",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "description",
+            "required": false,
+            "in": "query",
+            "description": "权限描述",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isActive",
+            "required": false,
+            "in": "query",
+            "description": "是否激活",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取权限列表"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取权限列表",
+        "tags": [
+          "权限管理"
+        ]
+      }
+    },
+    "/api/v1/manage/permission/page": {
+      "get": {
+        "operationId": "PermissionController_findPage",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功获取权限分页数据"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "分页获取权限列表",
+        "tags": [
+          "权限管理"
+        ]
+      }
+    },
+    "/api/v1/manage/permission/detail/{id}": {
+      "get": {
+        "operationId": "PermissionController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取权限详情"
+          },
+          "404": {
+            "description": "权限不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取权限详情",
+        "tags": [
+          "权限管理"
+        ]
+      }
+    },
+    "/api/v1/manage/permission/create": {
+      "post": {
+        "operationId": "PermissionController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePermissionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "权限创建成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "创建权限",
+        "tags": [
+          "权限管理"
+        ]
+      }
+    },
+    "/api/v1/manage/permission/update": {
+      "post": {
+        "operationId": "PermissionController_update",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePermissionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "权限更新成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          },
+          "404": {
+            "description": "权限不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "更新权限",
+        "tags": [
+          "权限管理"
+        ]
+      }
+    },
+    "/api/v1/manage/permission/delete": {
+      "post": {
+        "operationId": "PermissionController_delete",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "权限删除成功"
+          },
+          "400": {
+            "description": "删除权限失败"
+          },
+          "404": {
+            "description": "权限不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "删除权限",
+        "tags": [
+          "权限管理"
+        ]
+      }
+    },
+    "/api/v1/manage/permission/rolePermissions/{roleId}": {
+      "get": {
+        "operationId": "PermissionController_getRolePermissions",
+        "parameters": [
+          {
+            "name": "roleId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取角色权限"
+          },
+          "404": {
+            "description": "角色不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取角色权限",
+        "tags": [
+          "权限管理"
+        ]
+      }
+    },
+    "/api/v1/manage/roles/list": {
+      "get": {
+        "operationId": "RoleController_findAll",
+        "parameters": [
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "角色名称",
+            "schema": {
+              "maxLength": 30,
+              "type": "string"
+            }
+          },
+          {
+            "name": "description",
+            "required": false,
+            "in": "query",
+            "description": "角色描述",
+            "schema": {
+              "maxLength": 255,
+              "type": "string"
+            }
+          },
+          {
+            "name": "isActive",
+            "required": false,
+            "in": "query",
+            "description": "是否激活",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取角色列表"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取角色列表",
+        "tags": [
+          "角色管理"
+        ]
+      }
+    },
+    "/api/v1/manage/roles/page": {
+      "get": {
+        "operationId": "RoleController_findAllByPage",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功获取角色分页数据"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "分页获取角色列表",
+        "tags": [
+          "角色管理"
+        ]
+      }
+    },
+    "/api/v1/manage/roles/detail/{id}": {
+      "get": {
+        "operationId": "RoleController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取角色详情"
+          },
+          "404": {
+            "description": "角色不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取角色详情",
+        "tags": [
+          "角色管理"
+        ]
+      }
+    },
+    "/api/v1/manage/roles/create": {
+      "post": {
+        "operationId": "RoleController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRoleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "角色创建成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "创建角色",
+        "tags": [
+          "角色管理"
+        ]
+      }
+    },
+    "/api/v1/manage/roles/update": {
+      "post": {
+        "operationId": "RoleController_update",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRoleDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "角色更新成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          },
+          "404": {
+            "description": "角色不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "更新角色",
+        "tags": [
+          "角色管理"
+        ]
+      }
+    },
+    "/api/v1/manage/roles/delete": {
+      "post": {
+        "operationId": "RoleController_remove",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "角色删除成功"
+          },
+          "400": {
+            "description": "删除角色失败"
+          },
+          "404": {
+            "description": "角色不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "删除角色",
+        "tags": [
+          "角色管理"
+        ]
+      }
+    },
+    "/api/v1/manage/roles/grant": {
+      "post": {
+        "operationId": "RoleController_grant",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RolePermissionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "授权成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          },
+          "404": {
+            "description": "角色或权限不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "授予角色权限",
+        "tags": [
+          "角色管理"
+        ]
+      }
+    },
+    "/api/v1/manage/roles/revoke": {
+      "post": {
+        "operationId": "RoleController_revoke",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RolePermissionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "撤销授权成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          },
+          "404": {
+            "description": "角色或权限不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "撤销角色权限",
+        "tags": [
+          "角色管理"
+        ]
+      }
+    },
+    "/api/v1/manage/commodity-category/list": {
+      "get": {
+        "operationId": "CommodityCategoryController_findAll",
+        "parameters": [
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "分类名称",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "description",
+            "required": false,
+            "in": "query",
+            "description": "分类描述",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isActive",
+            "required": false,
+            "in": "query",
+            "description": "是否激活",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "isDisplayed",
+            "required": false,
+            "in": "query",
+            "description": "是否在前台展示",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取商品分类列表"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取商品分类列表",
+        "tags": [
+          "商品分类管理"
+        ]
+      }
+    },
+    "/api/v1/manage/commodity-category/page": {
+      "get": {
+        "operationId": "CommodityCategoryController_findPage",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功获取商品分类分页数据"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "分页获取商品分类列表",
+        "tags": [
+          "商品分类管理"
+        ]
+      }
+    },
+    "/api/v1/manage/commodity-category/detail/{id}": {
+      "get": {
+        "operationId": "CommodityCategoryController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取商品分类详情"
+          },
+          "404": {
+            "description": "商品分类不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取商品分类详情",
+        "tags": [
+          "商品分类管理"
+        ]
+      }
+    },
+    "/api/v1/manage/commodity-category/create": {
+      "post": {
+        "operationId": "CommodityCategoryController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCommodityCategoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "商品分类创建成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "创建商品分类",
+        "tags": [
+          "商品分类管理"
+        ]
+      }
+    },
+    "/api/v1/manage/commodity-category/update": {
+      "post": {
+        "operationId": "CommodityCategoryController_update",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCommodityCategoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "商品分类更新成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          },
+          "404": {
+            "description": "商品分类不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "更新商品分类",
+        "tags": [
+          "商品分类管理"
+        ]
+      }
+    },
+    "/api/v1/manage/commodity-category/delete": {
+      "post": {
+        "operationId": "CommodityCategoryController_delete",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "商品分类删除成功"
+          },
+          "400": {
+            "description": "删除商品分类失败"
+          },
+          "404": {
+            "description": "商品分类不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "删除商品分类",
+        "tags": [
+          "商品分类管理"
+        ]
+      }
+    },
+    "/api/v1/manage/commodity/list": {
+      "get": {
+        "operationId": "CommodityController_findAll",
+        "parameters": [
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "description": "商品名称",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "description",
+            "required": false,
+            "in": "query",
+            "description": "商品描述",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "minPrice",
+            "required": false,
+            "in": "query",
+            "description": "最低价格",
+            "schema": {
+              "default": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "maxPrice",
+            "required": false,
+            "in": "query",
+            "description": "最高价格",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "categoryId",
+            "required": false,
+            "in": "query",
+            "description": "商品分类 ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isActive",
+            "required": false,
+            "in": "query",
+            "description": "是否激活",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取商品列表"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取商品列表",
+        "tags": [
+          "商品管理"
+        ]
+      }
+    },
+    "/api/v1/manage/commodity/page": {
+      "get": {
+        "operationId": "CommodityController_findPage",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功获取商品分页数据"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "分页获取商品列表",
+        "tags": [
+          "商品管理"
+        ]
+      }
+    },
+    "/api/v1/manage/commodity/detail/{id}": {
+      "get": {
+        "operationId": "CommodityController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取商品详情"
+          },
+          "404": {
+            "description": "商品不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取商品详情",
+        "tags": [
+          "商品管理"
+        ]
+      }
+    },
+    "/api/v1/manage/commodity/create": {
+      "post": {
+        "operationId": "CommodityController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCommodityDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "商品创建成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "创建商品",
+        "tags": [
+          "商品管理"
+        ]
+      }
+    },
+    "/api/v1/manage/commodity/update": {
+      "post": {
+        "operationId": "CommodityController_update",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCommodityDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "商品更新成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          },
+          "404": {
+            "description": "商品不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "更新商品",
+        "tags": [
+          "商品管理"
+        ]
+      }
+    },
+    "/api/v1/manage/commodity/delete": {
+      "post": {
+        "operationId": "CommodityController_delete",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "商品删除成功"
+          },
+          "404": {
+            "description": "商品不存在"
+          },
+          "500": {
+            "description": "删除商品失败"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "删除商品",
+        "tags": [
+          "商品管理"
+        ]
+      }
+    },
+    "/api/v1/manage/cart-items/list": {
+      "get": {
+        "operationId": "CartItemController_list",
+        "parameters": [
+          {
+            "name": "consumerId",
+            "required": false,
+            "in": "query",
+            "description": "客户ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "commodityId",
+            "required": false,
+            "in": "query",
+            "description": "商品ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取购物车列表"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取购物车列表",
+        "tags": [
+          "购物车管理"
+        ]
+      }
+    },
+    "/api/v1/manage/cart-items/page": {
+      "get": {
+        "operationId": "CartItemController_page",
+        "parameters": [
+          {
+            "name": "page",
+            "required": true,
+            "in": "query",
+            "description": "页码",
+            "schema": {
+              "minimum": 1,
+              "default": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": true,
+            "in": "query",
+            "description": "每页数量",
+            "schema": {
+              "minimum": 1,
+              "default": 10,
+              "type": "number"
+            }
+          },
+          {
+            "name": "consumerId",
+            "required": false,
+            "in": "query",
+            "description": "客户ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "commodityId",
+            "required": false,
+            "in": "query",
+            "description": "商品ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取购物车分页数据"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "分页获取购物车列表",
+        "tags": [
+          "购物车管理"
+        ]
+      }
+    },
+    "/api/v1/manage/cart-items/detail/{id}": {
+      "get": {
+        "operationId": "CartItemController_detail",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取购物车项详情"
+          },
+          "404": {
+            "description": "购物车项不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取购物车项详情",
+        "tags": [
+          "购物车管理"
+        ]
+      }
+    },
+    "/api/v1/manage/cart-items/create": {
+      "post": {
+        "operationId": "CartItemController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCartItemDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "购物车项创建成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "创建购物车项",
+        "tags": [
+          "购物车管理"
+        ]
+      }
+    },
+    "/api/v1/manage/cart-items/update": {
+      "post": {
+        "operationId": "CartItemController_update",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCartItemDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "购物车项更新成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          },
+          "404": {
+            "description": "购物车项不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "更新购物车项",
+        "tags": [
+          "购物车管理"
+        ]
+      }
+    },
+    "/api/v1/manage/cart-items/delete": {
+      "post": {
+        "operationId": "CartItemController_delete",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "购物车项删除成功"
+          },
+          "400": {
+            "description": "删除购物车项失败"
+          },
+          "404": {
+            "description": "购物车项不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "删除购物车项",
+        "tags": [
+          "购物车管理"
+        ]
+      }
+    },
+    "/api/v1/manage/orders/list": {
+      "get": {
+        "operationId": "OrderController_list",
+        "parameters": [
+          {
+            "name": "orderNumber",
+            "required": false,
+            "in": "query",
+            "description": "订单编号",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "consumerId",
+            "required": false,
+            "in": "query",
+            "description": "客户ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "addressId",
+            "required": false,
+            "in": "query",
+            "description": "收货地址ID",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "description": "订单状态",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "PENDING",
+                "PAID",
+                "SHIPPED",
+                "DELIVERED",
+                "CANCELLED",
+                "REFUNDED"
+              ]
+            }
+          },
+          {
+            "name": "paymentMethod",
+            "required": false,
+            "in": "query",
+            "description": "支付方式",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "WECHAT",
+                "ALIPAY",
+                "CREDIT_CARD"
+              ]
+            }
+          },
+          {
+            "name": "commodityId",
+            "required": false,
+            "in": "query",
+            "description": "商品ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取订单列表"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取订单列表",
+        "tags": [
+          "订单管理"
+        ]
+      }
+    },
+    "/api/v1/manage/orders/page": {
+      "get": {
+        "operationId": "OrderController_page",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功获取订单分页数据"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "分页获取订单列表",
+        "tags": [
+          "订单管理"
+        ]
+      }
+    },
+    "/api/v1/manage/orders/detail/{id}": {
+      "get": {
+        "operationId": "OrderController_detail",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取订单详情"
+          },
+          "404": {
+            "description": "订单不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取订单详情",
+        "tags": [
+          "订单管理"
+        ]
+      }
+    },
+    "/api/v1/manage/orders/create": {
+      "post": {
+        "operationId": "OrderController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrderDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "订单创建成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "创建订单",
+        "tags": [
+          "订单管理"
+        ]
+      }
+    },
+    "/api/v1/manage/orders/update": {
+      "post": {
+        "operationId": "OrderController_update",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOrderDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "订单更新成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          },
+          "404": {
+            "description": "订单不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "更新订单",
+        "tags": [
+          "订单管理"
+        ]
+      }
+    },
+    "/api/v1/manage/orders/delete": {
+      "post": {
+        "operationId": "OrderController_delete",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "订单删除成功"
+          },
+          "400": {
+            "description": "删除订单失败"
+          },
+          "404": {
+            "description": "订单不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "删除订单",
+        "tags": [
+          "订单管理"
+        ]
+      }
+    },
+    "/api/v1/manage/order-items/list": {
+      "get": {
+        "operationId": "OrderItemController_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功获取订单项列表"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取订单项列表",
+        "tags": [
+          "订单项管理"
+        ]
+      }
+    },
+    "/api/v1/manage/order-items/page": {
+      "get": {
+        "operationId": "OrderItemController_page",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功获取订单项分页数据"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "分页获取订单项列表",
+        "tags": [
+          "订单项管理"
+        ]
+      }
+    },
+    "/api/v1/manage/order-items/detail/{id}": {
+      "get": {
+        "operationId": "OrderItemController_detail",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取订单项详情"
+          },
+          "404": {
+            "description": "订单项不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取订单项详情",
+        "tags": [
+          "订单项管理"
+        ]
+      }
+    },
+    "/api/v1/manage/order-items/create": {
+      "post": {
+        "operationId": "OrderItemController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrderItemDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "订单项创建成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "创建订单项",
+        "tags": [
+          "订单项管理"
+        ]
+      }
+    },
+    "/api/v1/manage/order-items/update": {
+      "post": {
+        "operationId": "OrderItemController_update",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOrderItemDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "订单项更新成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          },
+          "404": {
+            "description": "订单项不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "更新订单项",
+        "tags": [
+          "订单项管理"
+        ]
+      }
+    },
+    "/api/v1/manage/order-items/delete": {
+      "post": {
+        "operationId": "OrderItemController_delete",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "订单项删除成功"
+          },
+          "400": {
+            "description": "删除订单项失败"
+          },
+          "404": {
+            "description": "订单项不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "删除订单项",
+        "tags": [
+          "订单项管理"
+        ]
+      }
+    },
+    "/api/v1/manage/distributions/list": {
+      "get": {
+        "operationId": "DistributionController_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功获取分销列表"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取分销列表",
+        "tags": [
+          "分销管理"
+        ]
+      }
+    },
+    "/api/v1/manage/distributions/page": {
+      "get": {
+        "operationId": "DistributionController_page",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功获取分销分页数据"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "分页获取分销列表",
+        "tags": [
+          "分销管理"
+        ]
+      }
+    },
+    "/api/v1/manage/distributions/detail/{id}": {
+      "get": {
+        "operationId": "DistributionController_detail",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功获取分销详情"
+          },
+          "404": {
+            "description": "分销不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "获取分销详情",
+        "tags": [
+          "分销管理"
+        ]
+      }
+    },
+    "/api/v1/manage/distributions/create": {
+      "post": {
+        "operationId": "DistributionController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDistributionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "分销创建成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "创建分销",
+        "tags": [
+          "分销管理"
+        ]
+      }
+    },
+    "/api/v1/manage/distributions/update": {
+      "post": {
+        "operationId": "DistributionController_update",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateDistributionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "分销更新成功"
+          },
+          "400": {
+            "description": "请求参数错误"
+          },
+          "404": {
+            "description": "分销不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "更新分销",
+        "tags": [
+          "分销管理"
+        ]
+      }
+    },
+    "/api/v1/manage/distributions/delete": {
+      "post": {
+        "operationId": "DistributionController_delete",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "分销删除成功"
+          },
+          "400": {
+            "description": "删除分销失败"
+          },
+          "404": {
+            "description": "分销不存在"
+          }
+        },
+        "security": [
+          {
+            "JWT-auth": []
+          }
+        ],
+        "summary": "删除分销",
+        "tags": [
+          "分销管理"
+        ]
+      }
+    }
+  },
   "info": {
     "title": "E-Commerce API",
     "description": "API documentation for the e-commerce management system",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "contact": {}
   },
-  "servers": [
-    {
-      "url": "/api",
-      "description": "API server with global prefix"
-    }
-  ],
+  "tags": [],
+  "servers": [],
   "components": {
+    "securitySchemes": {
+      "JWT-auth": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http",
+        "name": "JWT",
+        "description": "Enter JWT token",
+        "in": "header"
+      }
+    },
     "schemas": {
-      "StandardResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "description": "Response code, 200 for success"
-          },
-          "data": {
-            "type": "object",
-            "description": "Response data"
-          },
-          "message": {
-            "type": "string",
-            "description": "Response message"
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Response timestamp"
-          }
-        }
+      "SignInType": {
+        "type": "string",
+        "enum": [
+          "username",
+          "email",
+          "phone"
+        ],
+        "description": "登录类型"
       },
-      "ErrorResponse": {
+      "SignInDto": {
         "type": "object",
         "properties": {
-          "code": {
-            "type": "integer",
-            "description": "Error code"
-          },
-          "data": {
-            "type": "null",
-            "description": "No data for error responses"
-          },
-          "message": {
+          "account": {
             "type": "string",
-            "description": "Error message"
+            "description": "账号（用户名/邮箱/手机号）"
           },
-          "timestamp": {
+          "password": {
             "type": "string",
-            "format": "date-time",
-            "description": "Response timestamp"
-          }
-        }
-      },
-      "PageDto": {
-        "type": "object",
-        "properties": {
-          "page": {
-            "type": "integer",
-            "description": "Page number (starting from 1)",
-            "default": 1,
-            "minimum": 1
+            "description": "密码"
           },
-          "pageSize": {
-            "type": "integer",
-            "description": "Number of items per page",
-            "default": 10,
-            "minimum": 1
+          "type": {
+            "description": "登录类型",
+            "default": "username",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignInType"
+              }
+            ]
           }
-        }
+        },
+        "required": [
+          "account",
+          "password"
+        ]
       },
-      "PagedResponse": {
+      "CreateAddressDto": {
         "type": "object",
         "properties": {
-          "records": {
+          "consumerId": {
+            "type": "string",
+            "description": "客户ID"
+          },
+          "province": {
+            "type": "string",
+            "description": "省份"
+          },
+          "city": {
+            "type": "string",
+            "description": "城市"
+          },
+          "district": {
+            "type": "string",
+            "description": "区/县"
+          },
+          "detail": {
+            "type": "string",
+            "description": "详细地址"
+          },
+          "isDefault": {
+            "type": "boolean",
+            "description": "是否默认地址",
+            "default": false
+          }
+        },
+        "required": [
+          "consumerId",
+          "province",
+          "city",
+          "district",
+          "detail"
+        ]
+      },
+      "UpdateAddressDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "地址ID"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "CreateUserDto": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "description": "用户名"
+          },
+          "email": {
+            "type": "string",
+            "description": "邮箱"
+          },
+          "phone": {
+            "type": "string",
+            "description": "手机号"
+          },
+          "realName": {
+            "type": "string",
+            "description": "真实姓名"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "头像 URL"
+          },
+          "password": {
+            "type": "string",
+            "description": "密码"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "是否激活",
+            "default": true
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ]
+      },
+      "UpdateUserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "用户ID"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "UpdatePasswordDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "用户ID"
+          },
+          "password": {
+            "type": "string",
+            "description": "新密码"
+          }
+        },
+        "required": [
+          "id",
+          "password"
+        ]
+      },
+      "GrantUserDto": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "用户ID"
+          },
+          "roleIds": {
+            "description": "角色ID列表",
             "type": "array",
-            "description": "List of records",
             "items": {
-              "type": "object"
+              "type": "string"
             }
-          },
-          "total": {
-            "type": "integer",
-            "description": "Total number of records"
-          },
-          "page": {
-            "type": "integer",
-            "description": "Current page number"
-          },
-          "pageSize": {
-            "type": "integer",
-            "description": "Number of records per page"
           }
-        }
+        },
+        "required": [
+          "userId",
+          "roleIds"
+        ]
+      },
+      "RevokeUserDto": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "用户ID"
+          },
+          "roleIds": {
+            "description": "角色ID列表",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "userId",
+          "roleIds"
+        ]
+      },
+      "CreateConsumerDto": {
+        "type": "object",
+        "properties": {
+          "phone": {
+            "type": "string",
+            "description": "手机号码"
+          },
+          "username": {
+            "type": "string",
+            "description": "用户名"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "头像 URL"
+          },
+          "password": {
+            "type": "string",
+            "description": "密码"
+          },
+          "frontCard": {
+            "type": "string",
+            "description": "身份证正面照片 URL"
+          },
+          "backCard": {
+            "type": "string",
+            "description": "身份证反面照片 URL"
+          },
+          "userCard": {
+            "type": "string",
+            "description": "手持身份证照片 URL"
+          }
+        },
+        "required": [
+          "phone"
+        ]
+      },
+      "UpdateConsumerDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "客户ID"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "CreatePermissionDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "权限名称",
+            "maxLength": 50
+          },
+          "code": {
+            "type": "string",
+            "description": "权限编码",
+            "maxLength": 100
+          },
+          "description": {
+            "type": "string",
+            "description": "权限描述",
+            "maxLength": 255
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "是否激活",
+            "default": true
+          }
+        },
+        "required": [
+          "name",
+          "code"
+        ]
+      },
+      "UpdatePermissionDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "权限ID"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "CreateRoleDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "角色名称",
+            "maxLength": 30
+          },
+          "description": {
+            "type": "string",
+            "description": "角色描述",
+            "maxLength": 255
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "是否激活",
+            "default": true
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UpdateRoleDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "角色ID"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "RolePermissionDto": {
+        "type": "object",
+        "properties": {
+          "roleId": {
+            "type": "string",
+            "description": "角色ID"
+          },
+          "permissionIds": {
+            "description": "权限ID列表",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "roleId",
+          "permissionIds"
+        ]
+      },
+      "CreateCommodityCategoryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "分类名称"
+          },
+          "description": {
+            "type": "string",
+            "description": "分类描述"
+          },
+          "isDisplayed": {
+            "type": "boolean",
+            "description": "是否在前台展示",
+            "default": true
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "是否激活",
+            "default": true
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UpdateCommodityCategoryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "分类ID"
+          }
+        },
+        "required": [
+          "id"
+        ]
       },
       "CommodityImageDto": {
         "type": "object",
         "properties": {
           "image": {
             "type": "string",
-            "description": "图片URL"
+            "description": "商品图片URL"
           },
           "sortOrder": {
-            "type": "integer",
-            "description": "图片排序",
-            "default": 1
+            "type": "number",
+            "description": "排序顺序",
+            "default": 0
           },
           "alt": {
             "type": "string",
             "description": "图片替代文本"
           }
         },
-        "required": ["image"]
+        "required": [
+          "image"
+        ]
       },
       "CreateCommodityDto": {
         "type": "object",
@@ -134,17 +3107,16 @@
             "minimum": 0
           },
           "stock": {
-            "type": "integer",
-            "description": "库存数量",
+            "type": "number",
+            "description": "商品库存",
             "minimum": 0
           },
           "mainImage": {
             "type": "string",
-            "description": "主图片URL"
+            "description": "商品主图片URL"
           },
           "categoryId": {
             "type": "string",
-            "format": "uuid",
             "description": "商品分类 ID"
           },
           "isActive": {
@@ -153,953 +3125,175 @@
             "default": true
           },
           "images": {
+            "description": "商品图片列表",
             "type": "array",
-            "description": "商品附加图片",
             "items": {
               "$ref": "#/components/schemas/CommodityImageDto"
             }
           }
         },
-        "required": ["name", "price", "stock", "categoryId"]
+        "required": [
+          "name",
+          "price",
+          "stock",
+          "categoryId"
+        ]
       },
       "UpdateCommodityDto": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
-            "format": "uuid",
+            "description": "商品ID"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "CreateCartItemDto": {
+        "type": "object",
+        "properties": {
+          "consumerId": {
+            "type": "string",
+            "description": "客户ID"
+          },
+          "commodityId": {
+            "type": "string",
             "description": "商品ID"
           },
-          "name": {
+          "quantity": {
+            "type": "number",
+            "description": "商品数量",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "consumerId",
+          "commodityId",
+          "quantity"
+        ]
+      },
+      "UpdateCartItemDto": {
+        "type": "object",
+        "properties": {
+          "id": {
             "type": "string",
-            "description": "商品名称"
+            "description": "购物车项ID"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "i": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateOrderDto": {
+        "type": "object",
+        "properties": {
+          "orderNumber": {
+            "type": "string",
+            "description": "订单编号"
           },
-          "description": {
+          "consumerId": {
             "type": "string",
-            "description": "商品描述"
+            "description": "客户ID"
+          },
+          "addressId": {
+            "type": "string",
+            "description": "收货地址ID"
+          },
+          "totalPrice": {
+            "description": "订单总价",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/i"
+              }
+            ]
+          },
+          "status": {
+            "type": "string",
+            "description": "订单状态",
+            "enum": [
+              "PENDING",
+              "PAID",
+              "SHIPPED",
+              "DELIVERED",
+              "CANCELLED",
+              "REFUNDED"
+            ]
+          },
+          "paymentMethod": {
+            "type": "string",
+            "description": "支付方式",
+            "enum": [
+              "WECHAT",
+              "ALIPAY",
+              "CREDIT_CARD"
+            ]
+          }
+        },
+        "required": [
+          "orderNumber",
+          "consumerId",
+          "addressId",
+          "totalPrice",
+          "status",
+          "paymentMethod"
+        ]
+      },
+      "UpdateOrderDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "订单ID"
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "CreateOrderItemDto": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "description": "订单ID"
+          },
+          "commodityId": {
+            "type": "string",
+            "description": "商品ID"
+          },
+          "quantity": {
+            "type": "number",
+            "description": "商品数量"
           },
           "price": {
-            "type": "number",
-            "description": "商品价格",
-            "minimum": 0
-          },
-          "stock": {
-            "type": "integer",
-            "description": "库存数量",
-            "minimum": 0
-          },
-          "mainImage": {
-            "type": "string",
-            "description": "主图片URL"
-          },
-          "categoryId": {
-            "type": "string",
-            "format": "uuid",
-            "description": "商品分类 ID"
-          },
-          "isActive": {
-            "type": "boolean",
-            "description": "是否激活"
-          },
-          "images": {
-            "type": "array",
-            "description": "商品附加图片",
-            "items": {
-              "$ref": "#/components/schemas/CommodityImageDto"
-            }
+            "type": "object",
+            "description": "商品价格"
           }
         },
-        "required": ["id"]
-      }
-    }
-  },
-  "paths": {
-    "/v1/manage/auth/signIn": {
-      "post": {
-        "tags": ["Auth"],
-        "summary": "用户登录",
-        "description": "使用账号和密码登录系统",
-        "operationId": "signIn",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "account": {
-                    "type": "string",
-                    "description": "用户账号（用户名、邮箱或手机号）"
-                  },
-                  "password": {
-                    "type": "string",
-                    "description": "用户密码"
-                  },
-                  "type": {
-                    "type": "string",
-                    "enum": ["username", "email", "phone"],
-                    "description": "登录类型"
-                  }
-                },
-                "required": ["account", "password"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "登录成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/StandardResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "type": "object",
-                          "properties": {
-                            "token": {
-                              "type": "string",
-                              "description": "JWT令牌"
-                            },
-                            "user": {
-                              "type": "object",
-                              "properties": {
-                                "id": {
-                                  "type": "string",
-                                  "format": "uuid"
-                                },
-                                "username": {
-                                  "type": "string"
-                                },
-                                "email": {
-                                  "type": "string"
-                                },
-                                "phone": {
-                                  "type": "string"
-                                },
-                                "avatar": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "登录失败",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/manage/auth/signOut": {
-      "get": {
-        "tags": ["Auth"],
-        "summary": "用户登出",
-        "description": "退出登录",
-        "operationId": "signOut",
-        "responses": {
-          "200": {
-            "description": "登出成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/StandardResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "type": "null"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/manage/auth/getUserInfo": {
-      "get": {
-        "tags": ["Auth"],
-        "summary": "获取当前用户信息",
-        "description": "获取当前登录用户的详细信息",
-        "operationId": "getUserInfo",
-        "responses": {
-          "200": {
-            "description": "获取用户信息成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/StandardResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "string",
-                              "format": "uuid"
-                            },
-                            "username": {
-                              "type": "string"
-                            },
-                            "email": {
-                              "type": "string"
-                            },
-                            "phone": {
-                              "type": "string"
-                            },
-                            "realName": {
-                              "type": "string"
-                            },
-                            "avatar": {
-                              "type": "string"
-                            },
-                            "isActive": {
-                              "type": "boolean"
-                            },
-                            "roles": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "id": {
-                                    "type": "string",
-                                    "format": "uuid"
-                                  },
-                                  "name": {
-                                    "type": "string"
-                                  },
-                                  "description": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            },
-                            "permissions": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "id": {
-                                    "type": "string",
-                                    "format": "uuid"
-                                  },
-                                  "name": {
-                                    "type": "string"
-                                  },
-                                  "code": {
-                                    "type": "string"
-                                  },
-                                  "description": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "未授权",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/manage/auth/refreshToken": {
-      "get": {
-        "tags": ["Auth"],
-        "summary": "刷新令牌",
-        "description": "刷新JWT令牌",
-        "operationId": "refreshToken",
-        "responses": {
-          "200": {
-            "description": "刷新令牌成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/StandardResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "type": "object",
-                          "properties": {
-                            "token": {
-                              "type": "string",
-                              "description": "新的JWT令牌"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "未授权",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/manage/users/list": {
-      "get": {
-        "tags": ["User"],
-        "summary": "获取用户列表",
-        "description": "获取系统用户列表",
-        "operationId": "listUsers",
-        "parameters": [
-          {
-            "name": "username",
-            "in": "query",
-            "description": "按用户名过滤",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "email",
-            "in": "query",
-            "description": "按邮箱过滤",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "phone",
-            "in": "query",
-            "description": "按手机号过滤",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "realName",
-            "in": "query",
-            "description": "按真实姓名过滤",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "isActive",
-            "in": "query",
-            "description": "按激活状态过滤",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "获取用户列表成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/StandardResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "id": {
-                                "type": "string",
-                                "format": "uuid"
-                              },
-                              "username": {
-                                "type": "string"
-                              },
-                              "email": {
-                                "type": "string"
-                              },
-                              "phone": {
-                                "type": "string"
-                              },
-                              "realName": {
-                                "type": "string"
-                              },
-                              "avatar": {
-                                "type": "string"
-                              },
-                              "isActive": {
-                                "type": "boolean"
-                              },
-                              "createdAt": {
-                                "type": "string",
-                                "format": "date-time"
-                              },
-                              "updatedAt": {
-                                "type": "string",
-                                "format": "date-time"
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "未授权",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/manage/users/page": {
-      "get": {
-        "tags": ["User"],
-        "summary": "分页获取用户列表",
-        "description": "分页获取系统用户列表",
-        "operationId": "pageUsers",
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "description": "页码，从1开始",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "minimum": 1,
-              "default": 1
-            }
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "description": "每页数量",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "minimum": 1,
-              "default": 10
-            }
-          },
-          {
-            "name": "username",
-            "in": "query",
-            "description": "按用户名过滤",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "email",
-            "in": "query",
-            "description": "按邮箱过滤",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "phone",
-            "in": "query",
-            "description": "按手机号过滤",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "realName",
-            "in": "query",
-            "description": "按真实姓名过滤",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "isActive",
-            "in": "query",
-            "description": "按激活状态过滤",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "分页获取用户列表成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/StandardResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "type": "object",
-                          "properties": {
-                            "records": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "id": {
-                                    "type": "string",
-                                    "format": "uuid"
-                                  },
-                                  "username": {
-                                    "type": "string"
-                                  },
-                                  "email": {
-                                    "type": "string"
-                                  },
-                                  "phone": {
-                                    "type": "string"
-                                  },
-                                  "realName": {
-                                    "type": "string"
-                                  },
-                                  "avatar": {
-                                    "type": "string"
-                                  },
-                                  "isActive": {
-                                    "type": "boolean"
-                                  },
-                                  "createdAt": {
-                                    "type": "string",
-                                    "format": "date-time"
-                                  },
-                                  "updatedAt": {
-                                    "type": "string",
-                                    "format": "date-time"
-                                  }
-                                }
-                              }
-                            },
-                            "total": {
-                              "type": "integer",
-                              "description": "总记录数"
-                            },
-                            "page": {
-                              "type": "integer",
-                              "description": "当前页码"
-                            },
-                            "pageSize": {
-                              "type": "integer",
-                              "description": "每页数量"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "未授权",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/manage/users/detail/{id}": {
-      "get": {
-        "tags": ["User"],
-        "summary": "获取用户详情",
-        "description": "根据ID获取用户详细信息",
-        "operationId": "getUserDetail",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "用户ID",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "获取用户详情成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/StandardResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "string",
-                              "format": "uuid"
-                            },
-                            "username": {
-                              "type": "string"
-                            },
-                            "email": {
-                              "type": "string"
-                            },
-                            "phone": {
-                              "type": "string"
-                            },
-                            "realName": {
-                              "type": "string"
-                            },
-                            "avatar": {
-                              "type": "string"
-                            },
-                            "isActive": {
-                              "type": "boolean"
-                            },
-                            "createdAt": {
-                              "type": "string",
-                              "format": "date-time"
-                            },
-                            "updatedAt": {
-                              "type": "string",
-                              "format": "date-time"
-                            },
-                            "roles": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "id": {
-                                    "type": "string",
-                                    "format": "uuid"
-                                  },
-                                  "name": {
-                                    "type": "string"
-                                  },
-                                  "description": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "未授权",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "用户不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/manage/users/create": {
-      "post": {
-        "tags": ["User"],
-        "summary": "创建用户",
-        "description": "创建新用户",
-        "operationId": "createUser",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "username": {
-                    "type": "string",
-                    "description": "用户名"
-                  },
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "description": "邮箱"
-                  },
-                  "phone": {
-                    "type": "string",
-                    "description": "手机号"
-                  },
-                  "realName": {
-                    "type": "string",
-                    "description": "真实姓名"
-                  },
-                  "avatar": {
-                    "type": "string",
-                    "description": "头像地址"
-                  },
-                  "password": {
-                    "type": "string",
-                    "description": "密码"
-                  },
-                  "isActive": {
-                    "type": "boolean",
-                    "description": "是否激活",
-                    "default": true
-                  }
-                },
-                "required": ["username", "password"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "创建用户成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/StandardResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "string",
-                              "format": "uuid",
-                              "description": "新创建的用户ID"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "请求参数错误",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "未授权",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/manage/users/update": {
-      "post": {
-        "tags": ["User"],
-        "summary": "更新用户",
-        "description": "更新用户信息",
-        "operationId": "updateUser",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "用户ID"
-                  },
-                  "username": {
-                    "type": "string",
-                    "description": "用户名"
-                  },
-                  "email": {
-                    "type": "string",
-                    "format": "email",
-                    "description": "邮箱"
-                  },
-                  "phone": {
-                    "type": "string",
-                    "description": "手机号"
-                  },
-                  "realName": {
-                    "type": "string",
-                    "description": "真实姓名"
-                  },
-                  "avatar": {
-                    "type": "string",
-                    "description": "头像地址"
-                  },
-                  "isActive": {
-                    "type": "boolean",
-                    "description": "是否激活"
-                  }
-                },
-                "required": ["id"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "更新用户成功",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/StandardResponse"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "type": "null"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "请求参数错误",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "未授权",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "用户不存在",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
+        "required": [
+          "orderId",
+          "commodityId",
+          "quantity",
+          "price"
+        ]
+      },
+      "UpdateOrderItemDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateDistributionDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateDistributionDto": {
+        "type": "object",
+        "properties": {}
       }
     }
   }
