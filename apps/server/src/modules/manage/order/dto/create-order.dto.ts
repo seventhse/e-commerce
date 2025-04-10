@@ -1,5 +1,11 @@
 import { OrderStatus, PaymentMethod } from '@prisma/client';
-import { IsNotEmpty, IsString, IsDecimal, IsEnum, IsUUID } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsDecimal,
+  IsEnum,
+  IsUUID,
+} from 'class-validator';
 import { Decimal } from '@prisma/client/runtime/library';
 
 export class CreateOrderDto {

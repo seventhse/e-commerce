@@ -1,8 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { DistributionService } from './distribution.service';
 import { CreateDistributionDto } from './dto/create-distribution.dto';
 import { UpdateDistributionDto } from './dto/update-distribution.dto';
-import { PageDistributionDto, SearchDistributionDto } from './dto/search-distribution.dto';
+import {
+  PageDistributionDto,
+  SearchDistributionDto,
+} from './dto/search-distribution.dto';
 
 @Controller('/v1/manage/distributions')
 export class DistributionController {
@@ -30,20 +33,14 @@ export class DistributionController {
 
   @Post('/update')
   async update(@Body() updateDistributionDto: UpdateDistributionDto) {
-    await this.distributionService.update(updateDistributionDto);
+    await this.distributionService.update(
+      updateDistributionDto.id,
+      updateDistributionDto,
+    );
   }
 
   @Post('/delete')
   async delete(@Body('id') id: string) {
     await this.distributionService.delete(id);
   }
-
-  @Get()
-  get() {
-    return "test";
-  };
-
-  
-
-
 }

@@ -21,7 +21,15 @@ export class PageOrderItemDto {
   commodityId?: string;
 }
 
-export class SearchOrderItemDto extends PageOrderItemDto {
+export class SearchOrderItemDto {
+  @IsOptional()
+  @IsString()
+  orderId?: string;
+
+  @IsOptional()
+  @IsString()
+  commodityId?: string;
+
   // Add more searchable attributes as needed, e.g.:
   // @IsOptional()
   // @IsInt()

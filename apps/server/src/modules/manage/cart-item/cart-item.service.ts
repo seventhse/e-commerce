@@ -7,7 +7,9 @@ import { CreateCartItemDto } from './dto/create-cart-item.dto';
 import { PageCartItemDto, SearchCartItemDto } from './dto/search-cart-item.dto';
 import { UpdateCartItemDto } from './dto/update-cart-item.dto';
 
-function buildCartItemWhere(searchCartItemDto: SearchCartItemDto): Prisma.CartItemWhereInput {
+function buildCartItemWhere(
+  searchCartItemDto: SearchCartItemDto,
+): Prisma.CartItemWhereInput {
   const where: Prisma.CartItemWhereInput = {};
 
   if (searchCartItemDto.consumerId) {
@@ -35,7 +37,9 @@ export class CartItemService {
   }
 
   async list(searchCartItemDto: SearchCartItemDto) {
-    this.logger.debug(`Finding cart items with filters ${JSON.stringify(searchCartItemDto)}`);
+    this.logger.debug(
+      `Finding cart items with filters ${JSON.stringify(searchCartItemDto)}`,
+    );
 
     const cartItems = await this.prisma.cartItem.findMany({
       where: buildCartItemWhere(searchCartItemDto),
@@ -50,7 +54,9 @@ export class CartItemService {
   }
 
   async page({ page, pageSize, ...search }: PageCartItemDto) {
-    this.logger.debug(`Paginating cart items with filters ${JSON.stringify({ page, pageSize, ...search })}`);
+    this.logger.debug(
+      `Paginating cart items with filters ${JSON.stringify({ page, pageSize, ...search })}`,
+    );
     const where = buildCartItemWhere(search);
 
     const [cartItems, total] = await Promise.all([
@@ -92,17 +98,24 @@ export class CartItemService {
   }
 
   async create(createCartItemDto: CreateCartItemDto) {
-    this.logger.debug(`Creating new cart item: ${JSON.stringify(createCartItemDto)}`);
+    this.logger.debug(
+      `Creating new cart item: ${JSON.stringify(createCartItemDto)}`,
+    );
 
     await this.checkCartItemExist(createCartItemDto);
 
-    const cartItem = await this.prisma.cartItem.create({ data: createCartItemDto, include });
+    const cartItem = await this.prisma.cartItem.create({
+      data: createCartItemDto,
+      include,
+    });
     this.logger.log(`Cart item created successfully: ${cartItem.id}`);
     return cartItem;
   }
 
   async update(id: string, updateCartItemDto: UpdateCartItemDto) {
-    this.logger.debug(`Updating cart item with id: ${id} and data: ${JSON.stringify(updateCartItemDto)}`);
+    this.logger.debug(
+      `Updating cart item with id: ${id} and data: ${JSON.stringify(updateCartItemDto)}`,
+    );
     await this.detail(id);
 
     const cartItem = await this.prisma.cartItem.update({
@@ -126,9 +139,17 @@ export class CartItemService {
   }
 
   private async checkCartItemExist(createCartItemDto: CreateCartItemDto) {
-    const exist = await this.prisma.cartItem.findFirst({ where: { consumerId: createCartItemDto.consumerId, commodityId: createCartItemDto.commodityId } });
+    const exist = await this.prisma.cartItem.findFirst({
+      where: {
+        consumerId: createCartItemDto.consumerId,
+        commodityId: createCartItemDto.commodityId,
+      },
+    });
     if (exist) {
-      throw new BusinessException(400, 'The commodity has already existed in the cart');
+      throw new BusinessException(
+        400,
+        'The commodity has already existed in the cart',
+      );
     }
     return true;
   }

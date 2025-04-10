@@ -1,7 +1,11 @@
 import { Body, Controller, Get, Post, Query, Param } from '@nestjs/common';
 import { OrderItemService } from './order-item.service';
-import { CreateOrderItemDto, UpdateOrderItemDto } from './dto/edit-order-item.dto';
-import { PageOrderItemDto, SearchOrderItemDto } from './dto/search-order-item.dto';
+import { CreateOrderItemDto } from './dto/create-order-item.dto';
+import { UpdateOrderItemDto } from './dto/update-order-item.dto';
+import {
+  PageOrderItemDto,
+  SearchOrderItemDto,
+} from './dto/search-order-item.dto';
 
 @Controller('/v1/manage/order-items')
 export class OrderItemController {
@@ -29,7 +33,10 @@ export class OrderItemController {
 
   @Post('/update')
   async update(@Body() updateOrderItemDto: UpdateOrderItemDto) {
-    await this.orderItemService.update(updateOrderItemDto);
+    await this.orderItemService.update(
+      updateOrderItemDto.id,
+      updateOrderItemDto,
+    );
   }
 
   @Post('/delete')

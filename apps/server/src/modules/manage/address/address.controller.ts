@@ -30,7 +30,7 @@ export class AddressController {
 
   @Post('/update')
   async update(@Body() updateAddressDto: UpdateAddressDto) {
-    await this.addressService.update(updateAddressDto);
+    await this.addressService.update(updateAddressDto.id, updateAddressDto);
   }
 
   @Post('/delete')

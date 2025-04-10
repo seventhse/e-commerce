@@ -12,4 +12,4 @@ import { DynamicModule } from '~/common/plugins/dynamic-module-loader';
   controllers: [CartItemController],
   providers: [CartItemService],
 })
-export class CartItemModule { }
+export class CartItemModule {}

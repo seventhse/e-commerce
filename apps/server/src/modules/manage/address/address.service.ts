@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { PrismaService } from '../../common/prisma/prisma.service';
+import { PrismaService } from '~/common/prisma/prisma.service';
 import { BusinessException } from '~/common/exceptions/business.exception';
 import { LoggerService } from '~/common/logger/logger.service';
 import { CreateAddressDto } from './dto/create-address.dto';
@@ -59,11 +59,15 @@ export class AddressService {
 
   async page({ page, pageSize, ...search }: PageAddressDto) {
     this.logger.debug(
-      `Paginating addresss \n ${JSON.stringify({
-        page,
-        pageSize,
-        ...search,
-      }, null, 2)}`,
+      `Paginating addresss \n ${JSON.stringify(
+        {
+          page,
+          pageSize,
+          ...search,
+        },
+        null,
+        2,
+      )}`,
     );
     const where = buildAddressWhere(search);
     const [addresss, total] = await Promise.all([
@@ -94,12 +98,16 @@ export class AddressService {
   }
 
   async create(createAddressDto: CreateAddressDto) {
-    this.logger.debug(`Creating new address \n ${JSON.stringify(createAddressDto, null, 2)}`);
+    this.logger.debug(
+      `Creating new address \n ${JSON.stringify(createAddressDto, null, 2)}`,
+    );
     return this.prisma.address.create({ data: createAddressDto });
   }
 
   async update(id: string, updateAddressDto: UpdateAddressDto) {
-    this.logger.debug(`Updating address with id: ${id} \n ${JSON.stringify(updateAddressDto, null, 2)}`);
+    this.logger.debug(
+      `Updating address with id: ${id} \n ${JSON.stringify(updateAddressDto, null, 2)}`,
+    );
     await this.detail(id);
     return this.prisma.address.update({
       where: { id },

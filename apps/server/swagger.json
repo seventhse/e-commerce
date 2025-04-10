@@ -1,637 +1,87 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "E-Commerce API - Commodity Management",
-    "description": "API documentation for commodity management in the e-commerce system",
+    "title": "E-Commerce API",
+    "description": "API documentation for the e-commerce management system",
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "/",
-      "description": "Default server"
+      "url": "/api",
+      "description": "API server with global prefix"
     }
   ],
-  "paths": {
-    "/commodity/list": {
-      "get": {
-        "tags": ["Commodity Management"],
-        "summary": "Get all commodities",
-        "description": "Retrieves all commodities based on the provided filters",
-        "operationId": "findAllCommodities",
-        "parameters": [
-          {
-            "name": "name",
-            "in": "query",
-            "description": "Filter by commodity name (case insensitive, partial match)",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "description",
-            "in": "query",
-            "description": "Filter by commodity description (case insensitive, partial match)",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "minPrice",
-            "in": "query",
-            "description": "Filter by minimum price",
-            "required": false,
-            "schema": {
-              "type": "number",
-              "minimum": 0
-            }
-          },
-          {
-            "name": "maxPrice",
-            "in": "query",
-            "description": "Filter by maximum price",
-            "required": false,
-            "schema": {
-              "type": "number",
-              "minimum": 0
-            }
-          },
-          {
-            "name": "categoryId",
-            "in": "query",
-            "description": "Filter by category ID",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "isActive",
-            "in": "query",
-            "description": "Filter by active status",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of commodities",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CommodityResponse"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/commodity/page": {
-      "get": {
-        "tags": ["Commodity Management"],
-        "summary": "Get paginated commodities",
-        "description": "Retrieves paginated commodities with filters",
-        "operationId": "findPageCommodities",
-        "parameters": [
-          {
-            "name": "page",
-            "in": "query",
-            "description": "Page number (starting from 1)",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "minimum": 1,
-              "default": 1
-            }
-          },
-          {
-            "name": "pageSize",
-            "in": "query",
-            "description": "Number of items per page",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "minimum": 1,
-              "default": 10
-            }
-          },
-          {
-            "name": "name",
-            "in": "query",
-            "description": "Filter by commodity name (case insensitive, partial match)",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "description",
-            "in": "query",
-            "description": "Filter by commodity description (case insensitive, partial match)",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "minPrice",
-            "in": "query",
-            "description": "Filter by minimum price",
-            "required": false,
-            "schema": {
-              "type": "number",
-              "minimum": 0
-            }
-          },
-          {
-            "name": "maxPrice",
-            "in": "query",
-            "description": "Filter by maximum price",
-            "required": false,
-            "schema": {
-              "type": "number",
-              "minimum": 0
-            }
-          },
-          {
-            "name": "categoryId",
-            "in": "query",
-            "description": "Filter by category ID",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "isActive",
-            "in": "query",
-            "description": "Filter by active status",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Paginated list of commodities",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PagedCommodityResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/commodity/detail/{id}": {
-      "get": {
-        "tags": ["Commodity Management"],
-        "summary": "Get commodity details",
-        "description": "Retrieves details of a specific commodity by ID",
-        "operationId": "findOneCommodity",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "Commodity ID",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Commodity details",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CommodityResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Commodity not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/commodity/create": {
-      "post": {
-        "tags": ["Commodity Management"],
-        "summary": "Create a new commodity",
-        "description": "Creates a new commodity with the provided data",
-        "operationId": "createCommodity",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateCommodityDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Commodity created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "format": "uuid",
-                      "description": "ID of the created commodity"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/commodity/update": {
-      "post": {
-        "tags": ["Commodity Management"],
-        "summary": "Update a commodity",
-        "description": "Updates an existing commodity with the provided data",
-        "operationId": "updateCommodity",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateCommodityDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Commodity updated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Commodity not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/commodity/delete": {
-      "post": {
-        "tags": ["Commodity Management"],
-        "summary": "Delete a commodity",
-        "description": "Deletes a commodity by ID",
-        "operationId": "deleteCommodity",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "ID of the commodity to delete"
-                  }
-                },
-                "required": ["id"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Commodity deleted successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "example": true
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Commodity not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
   "components": {
     "schemas": {
-      "CommodityImageDto": {
+      "StandardResponse": {
         "type": "object",
         "properties": {
-          "image": {
-            "type": "string",
-            "description": "URL of the image"
-          },
-          "sortOrder": {
+          "code": {
             "type": "integer",
-            "description": "Order of the image in the gallery",
-            "default": 1
+            "description": "Response code, 200 for success"
           },
-          "alt": {
-            "type": "string",
-            "description": "Alternative text for the image"
-          }
-        },
-        "required": ["image"]
-      },
-      "CreateCommodityDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Name of the commodity"
-          },
-          "description": {
-            "type": "string",
-            "description": "Description of the commodity"
-          },
-          "price": {
-            "type": "number",
-            "description": "Price of the commodity",
-            "minimum": 0
-          },
-          "stock": {
-            "type": "integer",
-            "description": "Stock quantity of the commodity",
-            "minimum": 0
-          },
-          "mainImage": {
-            "type": "string",
-            "description": "Main display image URL"
-          },
-          "categoryId": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Category ID of the commodity"
-          },
-          "isActive": {
-            "type": "boolean",
-            "description": "Whether the commodity is active",
-            "default": true
-          },
-          "images": {
-            "type": "array",
-            "description": "Additional images for the commodity",
-            "items": {
-              "$ref": "#/components/schemas/CommodityImageDto"
-            }
-          }
-        },
-        "required": ["name", "price", "stock", "categoryId"]
-      },
-      "UpdateCommodityDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "ID of the commodity to update"
-          },
-          "name": {
-            "type": "string",
-            "description": "Name of the commodity"
-          },
-          "description": {
-            "type": "string",
-            "description": "Description of the commodity"
-          },
-          "price": {
-            "type": "number",
-            "description": "Price of the commodity",
-            "minimum": 0
-          },
-          "stock": {
-            "type": "integer",
-            "description": "Stock quantity of the commodity",
-            "minimum": 0
-          },
-          "mainImage": {
-            "type": "string",
-            "description": "Main display image URL"
-          },
-          "categoryId": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Category ID of the commodity"
-          },
-          "isActive": {
-            "type": "boolean",
-            "description": "Whether the commodity is active"
-          },
-          "images": {
-            "type": "array",
-            "description": "Additional images for the commodity",
-            "items": {
-              "$ref": "#/components/schemas/CommodityImageDto"
-            }
-          }
-        },
-        "required": ["id"]
-      },
-      "CommodityResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Unique identifier for the commodity"
-          },
-          "name": {
-            "type": "string",
-            "description": "Name of the commodity"
-          },
-          "description": {
-            "type": "string",
-            "description": "Description of the commodity"
-          },
-          "price": {
-            "type": "number",
-            "description": "Price of the commodity"
-          },
-          "stock": {
-            "type": "integer",
-            "description": "Stock quantity of the commodity"
-          },
-          "mainImage": {
-            "type": "string",
-            "description": "Main display image URL"
-          },
-          "categoryId": {
-            "type": "string",
-            "format": "uuid",
-            "description": "Category ID of the commodity"
-          },
-          "isActive": {
-            "type": "boolean",
-            "description": "Whether the commodity is active"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Creation timestamp"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Last update timestamp"
-          },
-          "category": {
+          "data": {
             "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "name": {
-                "type": "string"
-              },
-              "isActive": {
-                "type": "boolean"
-              }
-            }
+            "description": "Response data"
           },
-          "images": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                "image": {
-                  "type": "string"
-                },
-                "alt": {
-                  "type": "string"
-                },
-                "sortOrder": {
-                  "type": "integer"
-                }
-              }
-            }
+          "message": {
+            "type": "string",
+            "description": "Response message"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Response timestamp"
           }
         }
       },
-      "PagedCommodityResponse": {
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Error code"
+          },
+          "data": {
+            "type": "null",
+            "description": "No data for error responses"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Response timestamp"
+          }
+        }
+      },
+      "PageDto": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "description": "Page number (starting from 1)",
+            "default": 1,
+            "minimum": 1
+          },
+          "pageSize": {
+            "type": "integer",
+            "description": "Number of items per page",
+            "default": 10,
+            "minimum": 1
+          }
+        }
+      },
+      "PagedResponse": {
         "type": "object",
         "properties": {
           "records": {
             "type": "array",
+            "description": "List of records",
             "items": {
-              "$ref": "#/components/schemas/CommodityResponse"
+              "type": "object"
             }
           },
           "total": {
@@ -648,20 +98,1006 @@
           }
         }
       },
-      "ErrorResponse": {
+      "CommodityImageDto": {
         "type": "object",
         "properties": {
-          "statusCode": {
+          "image": {
+            "type": "string",
+            "description": "图片URL"
+          },
+          "sortOrder": {
             "type": "integer",
-            "description": "HTTP status code"
+            "description": "图片排序",
+            "default": 1
           },
-          "message": {
+          "alt": {
             "type": "string",
-            "description": "Error message"
+            "description": "图片替代文本"
+          }
+        },
+        "required": ["image"]
+      },
+      "CreateCommodityDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "商品名称"
           },
-          "error": {
+          "description": {
             "type": "string",
-            "description": "Error type"
+            "description": "商品描述"
+          },
+          "price": {
+            "type": "number",
+            "description": "商品价格",
+            "minimum": 0
+          },
+          "stock": {
+            "type": "integer",
+            "description": "库存数量",
+            "minimum": 0
+          },
+          "mainImage": {
+            "type": "string",
+            "description": "主图片URL"
+          },
+          "categoryId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "商品分类 ID"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "是否激活",
+            "default": true
+          },
+          "images": {
+            "type": "array",
+            "description": "商品附加图片",
+            "items": {
+              "$ref": "#/components/schemas/CommodityImageDto"
+            }
+          }
+        },
+        "required": ["name", "price", "stock", "categoryId"]
+      },
+      "UpdateCommodityDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "商品ID"
+          },
+          "name": {
+            "type": "string",
+            "description": "商品名称"
+          },
+          "description": {
+            "type": "string",
+            "description": "商品描述"
+          },
+          "price": {
+            "type": "number",
+            "description": "商品价格",
+            "minimum": 0
+          },
+          "stock": {
+            "type": "integer",
+            "description": "库存数量",
+            "minimum": 0
+          },
+          "mainImage": {
+            "type": "string",
+            "description": "主图片URL"
+          },
+          "categoryId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "商品分类 ID"
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "是否激活"
+          },
+          "images": {
+            "type": "array",
+            "description": "商品附加图片",
+            "items": {
+              "$ref": "#/components/schemas/CommodityImageDto"
+            }
+          }
+        },
+        "required": ["id"]
+      }
+    }
+  },
+  "paths": {
+    "/v1/manage/auth/signIn": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "用户登录",
+        "description": "使用账号和密码登录系统",
+        "operationId": "signIn",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "account": {
+                    "type": "string",
+                    "description": "用户账号（用户名、邮箱或手机号）"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "用户密码"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["username", "email", "phone"],
+                    "description": "登录类型"
+                  }
+                },
+                "required": ["account", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "登录成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/StandardResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "token": {
+                              "type": "string",
+                              "description": "JWT令牌"
+                            },
+                            "user": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "username": {
+                                  "type": "string"
+                                },
+                                "email": {
+                                  "type": "string"
+                                },
+                                "phone": {
+                                  "type": "string"
+                                },
+                                "avatar": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "登录失败",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/manage/auth/signOut": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "用户登出",
+        "description": "退出登录",
+        "operationId": "signOut",
+        "responses": {
+          "200": {
+            "description": "登出成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/StandardResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "null"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/manage/auth/getUserInfo": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "获取当前用户信息",
+        "description": "获取当前登录用户的详细信息",
+        "operationId": "getUserInfo",
+        "responses": {
+          "200": {
+            "description": "获取用户信息成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/StandardResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            "username": {
+                              "type": "string"
+                            },
+                            "email": {
+                              "type": "string"
+                            },
+                            "phone": {
+                              "type": "string"
+                            },
+                            "realName": {
+                              "type": "string"
+                            },
+                            "avatar": {
+                              "type": "string"
+                            },
+                            "isActive": {
+                              "type": "boolean"
+                            },
+                            "roles": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "description": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
+                            "permissions": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "code": {
+                                    "type": "string"
+                                  },
+                                  "description": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未授权",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/manage/auth/refreshToken": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "刷新令牌",
+        "description": "刷新JWT令牌",
+        "operationId": "refreshToken",
+        "responses": {
+          "200": {
+            "description": "刷新令牌成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/StandardResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "token": {
+                              "type": "string",
+                              "description": "新的JWT令牌"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未授权",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/manage/users/list": {
+      "get": {
+        "tags": ["User"],
+        "summary": "获取用户列表",
+        "description": "获取系统用户列表",
+        "operationId": "listUsers",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "description": "按用户名过滤",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "按邮箱过滤",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "按手机号过滤",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "realName",
+            "in": "query",
+            "description": "按真实姓名过滤",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isActive",
+            "in": "query",
+            "description": "按激活状态过滤",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "获取用户列表成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/StandardResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "username": {
+                                "type": "string"
+                              },
+                              "email": {
+                                "type": "string"
+                              },
+                              "phone": {
+                                "type": "string"
+                              },
+                              "realName": {
+                                "type": "string"
+                              },
+                              "avatar": {
+                                "type": "string"
+                              },
+                              "isActive": {
+                                "type": "boolean"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未授权",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/manage/users/page": {
+      "get": {
+        "tags": ["User"],
+        "summary": "分页获取用户列表",
+        "description": "分页获取系统用户列表",
+        "operationId": "pageUsers",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "页码，从1开始",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "每页数量",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 10
+            }
+          },
+          {
+            "name": "username",
+            "in": "query",
+            "description": "按用户名过滤",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "按邮箱过滤",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "phone",
+            "in": "query",
+            "description": "按手机号过滤",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "realName",
+            "in": "query",
+            "description": "按真实姓名过滤",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isActive",
+            "in": "query",
+            "description": "按激活状态过滤",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "分页获取用户列表成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/StandardResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "records": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                  },
+                                  "username": {
+                                    "type": "string"
+                                  },
+                                  "email": {
+                                    "type": "string"
+                                  },
+                                  "phone": {
+                                    "type": "string"
+                                  },
+                                  "realName": {
+                                    "type": "string"
+                                  },
+                                  "avatar": {
+                                    "type": "string"
+                                  },
+                                  "isActive": {
+                                    "type": "boolean"
+                                  },
+                                  "createdAt": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  },
+                                  "updatedAt": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  }
+                                }
+                              }
+                            },
+                            "total": {
+                              "type": "integer",
+                              "description": "总记录数"
+                            },
+                            "page": {
+                              "type": "integer",
+                              "description": "当前页码"
+                            },
+                            "pageSize": {
+                              "type": "integer",
+                              "description": "每页数量"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未授权",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/manage/users/detail/{id}": {
+      "get": {
+        "tags": ["User"],
+        "summary": "获取用户详情",
+        "description": "根据ID获取用户详细信息",
+        "operationId": "getUserDetail",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "用户ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "获取用户详情成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/StandardResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            "username": {
+                              "type": "string"
+                            },
+                            "email": {
+                              "type": "string"
+                            },
+                            "phone": {
+                              "type": "string"
+                            },
+                            "realName": {
+                              "type": "string"
+                            },
+                            "avatar": {
+                              "type": "string"
+                            },
+                            "isActive": {
+                              "type": "boolean"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "roles": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "description": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未授权",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "用户不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/manage/users/create": {
+      "post": {
+        "tags": ["User"],
+        "summary": "创建用户",
+        "description": "创建新用户",
+        "operationId": "createUser",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "用户名"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "邮箱"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "手机号"
+                  },
+                  "realName": {
+                    "type": "string",
+                    "description": "真实姓名"
+                  },
+                  "avatar": {
+                    "type": "string",
+                    "description": "头像地址"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "密码"
+                  },
+                  "isActive": {
+                    "type": "boolean",
+                    "description": "是否激活",
+                    "default": true
+                  }
+                },
+                "required": ["username", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "创建用户成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/StandardResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "format": "uuid",
+                              "description": "新创建的用户ID"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未授权",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/manage/users/update": {
+      "post": {
+        "tags": ["User"],
+        "summary": "更新用户",
+        "description": "更新用户信息",
+        "operationId": "updateUser",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "用户ID"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "用户名"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "邮箱"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "手机号"
+                  },
+                  "realName": {
+                    "type": "string",
+                    "description": "真实姓名"
+                  },
+                  "avatar": {
+                    "type": "string",
+                    "description": "头像地址"
+                  },
+                  "isActive": {
+                    "type": "boolean",
+                    "description": "是否激活"
+                  }
+                },
+                "required": ["id"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "更新用户成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/StandardResponse"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "null"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "请求参数错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "未授权",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "用户不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }

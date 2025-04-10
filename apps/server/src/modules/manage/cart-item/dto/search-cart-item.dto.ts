@@ -21,4 +21,12 @@ export class PageCartItemDto {
   commodityId?: string;
 }
 
-export class SearchCartItemDto extends PageCartItemDto {}
+export class SearchCartItemDto {
+  @IsOptional()
+  @IsString()
+  consumerId?: string;
+
+  @IsOptional()
+  @IsString()
+  commodityId?: string;
+}

@@ -55,7 +55,6 @@ export interface DynamicModuleLoaderOptions {
 
 @Injectable()
 export class DynamicModuleLoaderService {
-
   private logger = new LoggerService(DynamicModuleLoaderService.name);
   private loadedModules: Map<string, Type<any> | NestDynamicModule> = new Map();
   private moduleRegistry: Map<string, DynamicModuleOptions> = new Map();
@@ -164,7 +163,7 @@ export class DynamicModuleLoaderService {
     recursive: boolean,
   ): string[] {
     const readDirRecursive = (dir: string) => {
-      let result: string[] = []
+      let result: string[] = [];
       if (!fs.existsSync(dir)) {
         this.logger.warn(`Directory ${dir} does not exist`);
         return result;
@@ -177,7 +176,7 @@ export class DynamicModuleLoaderService {
         const stat = fs.statSync(filePath);
 
         if (stat.isDirectory() && recursive) {
-          result.push(...readDirRecursive(filePath))
+          result.push(...readDirRecursive(filePath));
         } else if (stat.isFile()) {
           // Check if file matches include patterns and doesn't match exclude patterns
           const relativePath = path.relative(basePath, filePath);
@@ -196,7 +195,7 @@ export class DynamicModuleLoaderService {
         }
       }
 
-      return result
+      return result;
     };
 
     return readDirRecursive(basePath);
@@ -289,7 +288,7 @@ export class DynamicModuleLoaderService {
    */
   private isNestModule(obj: any): boolean {
     // return typeof obj === 'function' && !!Reflect.getMetadata('__module', obj);
-    return typeof obj === 'function'
+    return typeof obj === 'function';
   }
 
   /**
@@ -353,8 +352,10 @@ export class DynamicModuleLoaderService {
   /**
    * Load a module
    */
-  private async loadModule(meta: DynamicModuleOptions): Promise<ModuleLoadResult> {
-    let fullMeta = this.moduleRegistry.get(meta.name)
+  private async loadModule(
+    meta: DynamicModuleOptions,
+  ): Promise<ModuleLoadResult> {
+    let fullMeta = this.moduleRegistry.get(meta.name);
     if (!fullMeta || !fullMeta._moduleClass) {
       return {
         name: fullMeta!.name,
@@ -377,14 +378,15 @@ export class DynamicModuleLoaderService {
       this.logger.log(`Loading module: ${fullMeta.name}`);
 
       // Check if the module has a forRoot or register method
-      let moduleInstance = fullMeta._moduleClass as NestDynamicModule | Type<any>;
+      let moduleInstance = fullMeta._moduleClass as
+        | NestDynamicModule
+        | Type<any>;
 
-      if (
-        typeof (fullMeta._moduleClass as any)?.forRoot ===
-        'function'
-      ) {
+      if (typeof (fullMeta._moduleClass as any)?.forRoot === 'function') {
         moduleInstance = (fullMeta._moduleClass as any).forRoot();
-      } else if (typeof (fullMeta._moduleClass as any).register === 'function') {
+      } else if (
+        typeof (fullMeta._moduleClass as any).register === 'function'
+      ) {
         moduleInstance = (fullMeta._moduleClass as any).register();
       }
 

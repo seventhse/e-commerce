@@ -5,7 +5,10 @@ import { LoggerService } from '~/common/logger/logger.service';
 import { BusinessException } from '~/common/exceptions/business.exception';
 import { CreateOrderItemDto } from './dto/create-order-item.dto';
 import { UpdateOrderItemDto } from './dto/update-order-item.dto';
-import { PageOrderItemDto, SearchOrderItemDto } from './dto/search-order-item.dto';
+import {
+  PageOrderItemDto,
+  SearchOrderItemDto,
+} from './dto/search-order-item.dto';
 
 function buildOrderItemWhere(searchOrderItemDto: SearchOrderItemDto) {
   const where: Prisma.OrderItemWhereInput = {};
@@ -122,10 +125,15 @@ export class OrderItemService {
   }
 
   async update(id: string, updateOrderItemDto: UpdateOrderItemDto) {
-    this.logger.debug(`Updating orderItem with id: ${id} \\n ${JSON.stringify(updateOrderItemDto, null, 2)}`);
+    this.logger.debug(
+      `Updating orderItem with id: ${id} \\n ${JSON.stringify(updateOrderItemDto, null, 2)}`,
+    );
     const res = await this.detail(id);
     if (!res) throw new BusinessException(400, '找不到该订单项');
-    return this.prisma.orderItem.update({ where: { id }, data: updateOrderItemDto });
+    return this.prisma.orderItem.update({
+      where: { id },
+      data: updateOrderItemDto,
+    });
   }
 
   async delete(id: string) {

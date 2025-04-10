@@ -5,9 +5,14 @@ import { BusinessException } from '~/common/exceptions/business.exception';
 import { LoggerService } from '~/common/logger/logger.service';
 import { CreateDistributionDto } from './dto/create-distribution.dto';
 import { UpdateDistributionDto } from './dto/update-distribution.dto';
-import { PageDistributionDto, SearchDistributionDto } from './dto/search-distribution.dto';
+import {
+  PageDistributionDto,
+  SearchDistributionDto,
+} from './dto/search-distribution.dto';
 
-function buildDistributionWhere(searchDistributionDto: SearchDistributionDto): Prisma.DistributionWhereInput {
+function buildDistributionWhere(
+  searchDistributionDto: SearchDistributionDto,
+): Prisma.DistributionWhereInput {
   const where: Prisma.DistributionWhereInput = {};
 
   if (searchDistributionDto.salesId) {
@@ -75,7 +80,9 @@ export class DistributionService {
       }),
       this.prisma.distribution.count({ where }),
     ]);
-    this.logger.debug(`Found ${distributions.length} distributions, total: ${total}`);
+    this.logger.debug(
+      `Found ${distributions.length} distributions, total: ${total}`,
+    );
 
     return { records: distributions, total, page, pageSize };
   }
@@ -94,16 +101,25 @@ export class DistributionService {
   }
 
   async create(createDistributionDto: CreateDistributionDto) {
-    this.logger.debug(`Creating new distribution \n ${JSON.stringify(createDistributionDto, null, 2)}`);
-    const distribution = await this.prisma.distribution.create({ data: createDistributionDto });
+    this.logger.debug(
+      `Creating new distribution \n ${JSON.stringify(createDistributionDto, null, 2)}`,
+    );
+    const distribution = await this.prisma.distribution.create({
+      data: createDistributionDto,
+    });
     this.logger.log(`Distribution created successfully: ${distribution.id}`);
     return distribution;
   }
 
   async update(id: string, updateDistributionDto: UpdateDistributionDto) {
-    this.logger.debug(`Updating distribution with id: ${id} \n ${JSON.stringify(updateDistributionDto, null, 2)}`);
+    this.logger.debug(
+      `Updating distribution with id: ${id} \n ${JSON.stringify(updateDistributionDto, null, 2)}`,
+    );
     await this.detail(id);
-    const distribution = await this.prisma.distribution.update({ where: { id }, data: updateDistributionDto });
+    const distribution = await this.prisma.distribution.update({
+      where: { id },
+      data: updateDistributionDto,
+    });
     this.logger.log(`Distribution ${id} updated successfully`);
     return distribution;
   }
@@ -114,9 +130,6 @@ export class DistributionService {
     await this.prisma.distribution.delete({ where: { id } });
     this.logger.log(`Distribution ${id} deleted successfully`);
     return null;
-  }
-}
-    });
   }
 
   remove(id: string) {

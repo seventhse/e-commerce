@@ -1,17 +1,8 @@
-import { Type } from 'class-transformer';
-import { IsBoolean, IsInt, IsOptional, IsString, Min } from 'class-validator';
+import { IntersectionType } from '@nestjs/mapped-types';
+import { IsOptional, IsString } from 'class-validator';
+import { PageDto } from '~/common/dto/common.dto';
 
-export class PageDistributionDto {
-  @Type(() => Number)
-  @IsInt()
-  @Min(1)
-  page: number;
-
-  @Type(() => Number)
-  @IsInt()
-  @Min(1)
-  pageSize: number;
-
+export class SearchDistributionDto {
   @IsOptional()
   @IsString()
   salesId?: string;
@@ -21,12 +12,7 @@ export class PageDistributionDto {
   customerId?: string;
 }
 
-export class SearchDistributionDto extends PageDistributionDto {
-  @IsOptional()
-  @IsString()
-  salesName?: string;
-
-  @IsOptional()
-  @IsString()
-  customerName?: string;
-}
+export class PageDistributionDto extends IntersectionType(
+  SearchDistributionDto,
+  PageDto,
+) {}

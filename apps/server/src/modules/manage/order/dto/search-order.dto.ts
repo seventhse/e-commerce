@@ -1,15 +1,9 @@
-import { Type } from 'class-transformer';
-import { IsBoolean, IsInt, IsOptional, IsString } from 'class-validator';
+import { IntersectionType } from '@nestjs/mapped-types';
+import { OrderStatus } from '@prisma/client';
+import { IsOptional, IsString } from 'class-validator';
+import { PageDto } from '~/common/dto/common.dto';
 
-export class PageOrderDto {
-  @Type(() => Number)
-  @IsInt()
-  page: number;
-
-  @Type(() => Number)
-  @IsInt()
-  pageSize: number;
-
+export class SearchOrderDto {
   @IsOptional()
   @IsString()
   orderNumber?: string;
@@ -24,19 +18,19 @@ export class PageOrderDto {
 
   @IsOptional()
   @IsString()
-  status?: string;
+  status?: OrderStatus;
 
   @IsOptional()
   @IsString()
   paymentMethod?: string;
-}
 
-export class SearchOrderDto extends PageOrderDto {
   // You can add more specific search criteria here if needed,
   // for example, date range, total price range, etc.
 
   // Example: Search by OrderItem's commodityId
   @IsOptional()
   @IsString()
-  commodityId?: string; 
+  commodityId?: string;
 }
+
+export class PageOrderDto extends IntersectionType(SearchOrderDto, PageDto) {}

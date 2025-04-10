@@ -8,11 +8,8 @@ import { DynamicModule } from '~/common/plugins/dynamic-module-loader';
   enabled: true,
   weight: 8,
 })
-
-@Module({ 
+@Module({
   controllers: [OrderItemController],
   providers: [OrderItemService],
 })
-export class OrderItemModule {
-
-}
+export class OrderItemModule {}

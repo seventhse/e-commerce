@@ -1,14 +1,8 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Query,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { PageOrderDto, SearchOrderDto } from './dto/search-order.dto';
-import { CreateOrderDto, UpdateOrderDto } from './dto/edit-order.dto';
+import { CreateOrderDto } from './dto/create-order.dto';
+import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Controller('/v1/manage/orders')
 export class OrderController {
@@ -36,7 +30,7 @@ export class OrderController {
 
   @Post('/update')
   async update(@Body() updateOrderDto: UpdateOrderDto) {
-    await this.orderService.update(updateOrderDto);
+    await this.orderService.update(updateOrderDto.id, updateOrderDto);
   }
 
   @Post('/delete')

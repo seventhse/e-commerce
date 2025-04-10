@@ -12,6 +12,4 @@ import { DynamicModule } from '~/common/plugins/dynamic-module-loader';
   controllers: [ConsumerController],
   providers: [ConsumerService],
 })
-export class ConsumerModule {
-
-}
+export class ConsumerModule {}

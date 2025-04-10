@@ -7,7 +7,9 @@ import { CreateConsumerDto } from './dto/create-consumer.dto';
 import { UpdateConsumerDto } from './dto/update-consumer.dto';
 import { PageConsumerDto, SearchConsumerDto } from './dto/search-consumer.dto';
 
-function buildConsumerWhere(searchConsumerDto: SearchConsumerDto): Prisma.ConsumerWhereInput {
+function buildConsumerWhere(
+  searchConsumerDto: SearchConsumerDto,
+): Prisma.ConsumerWhereInput {
   const where: Prisma.ConsumerWhereInput = {
     deletedAt: null,
   };
@@ -16,7 +18,10 @@ function buildConsumerWhere(searchConsumerDto: SearchConsumerDto): Prisma.Consum
     where.phone = { contains: searchConsumerDto.phone };
   }
   if (searchConsumerDto.username) {
-    where.username = { contains: searchConsumerDto.username, mode: 'insensitive' };
+    where.username = {
+      contains: searchConsumerDto.username,
+      mode: 'insensitive',
+    };
   }
   return where;
 }
@@ -151,10 +156,7 @@ export class ConsumerService {
   ) {
     const existingConsumer = await this.prisma.consumer.findFirst({
       where: {
-        OR: [
-          { username: consumerDto.username },
-          { phone: consumerDto.phone },
-        ],
+        OR: [{ username: consumerDto.username }, { phone: consumerDto.phone }],
         id: {
           not: id,
         },

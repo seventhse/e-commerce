@@ -8,10 +8,8 @@ import { DynamicModule } from '~/common/plugins/dynamic-module-loader';
   enabled: true,
   weight: 10,
 })
-
-@Module({ 
+@Module({
   controllers: [DistributionController],
   providers: [DistributionService],
 })
-
 export class DistributionModule {}
