@@ -4,10 +4,13 @@ import { create } from 'zustand'
 const ACCESS_TOKEN = 'thisisjustarandomstring'
 
 interface AuthUser {
-  accountNo: string
+  id: string
+  username: string
   email: string
-  role: string[]
-  exp: number
+  realName: string
+  isActive: boolean
+  roles?: { id: string; name: string }[]
+  permissions?: string[]
 }
 
 interface AuthState {

@@ -44,8 +44,10 @@ apiClient.interceptors.response.use(
         const refreshResponse = await AuthService.refreshToken()
         const { access_token } = refreshResponse
 
-        // Update the token in the store
+        // Update the tokens in the store
         useAuthStore.getState().auth.setAccessToken(access_token)
+        // Store the refresh token if needed in the future
+        // Currently, the refresh token is automatically included in the request by the server
 
         // Retry the original request with the new token
         originalRequest.headers = {
