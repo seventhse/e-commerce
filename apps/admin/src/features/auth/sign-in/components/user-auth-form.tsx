@@ -2,7 +2,7 @@ import { HTMLAttributes, useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Link, useNavigate } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
@@ -16,7 +16,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
 import { AuthService } from '@/services/auth.service'
-import { useAuthStore } from '@/stores/authStore'
+import { useAuth } from '@/stores/authStore'
 import { toast } from '@/hooks/use-toast'
 
 type UserAuthFormProps = HTMLAttributes<HTMLDivElement>
@@ -35,7 +35,8 @@ const formSchema = z.object({
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
-  const { setAccessToken, setUser } = useAuthStore().auth
+
+  const { setAccessToken, setUser } = useAuth()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -70,13 +71,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         title: 'Login successful',
         description: `Welcome back, ${userInfo.username}!`,
       })
-    } catch (error) {
-      console.error('Login failed:', error)
-      toast({
-        variant: 'destructive',
-        title: 'Login failed',
-        description: 'Invalid email or password. Please try again.',
-      })
     } finally {
       setIsLoading(false)
     }
@@ -105,15 +99,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               name='password'
               render={({ field }) => (
                 <FormItem className='space-y-1'>
-                  <div className='flex items-center justify-between'>
-                    <FormLabel>Password</FormLabel>
-                    <Link
-                      to='/forgot-password'
-                      className='text-sm font-medium text-muted-foreground hover:opacity-75'
-                    >
-                      Forgot password?
-                    </Link>
-                  </div>
                   <FormControl>
                     <PasswordInput placeholder='********' {...field} />
                   </FormControl>

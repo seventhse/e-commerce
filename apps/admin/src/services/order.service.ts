@@ -5,6 +5,7 @@ export enum OrderStatus {
   PAID = 'PAID',
   SHIPPED = 'SHIPPED',
   DELIVERED = 'DELIVERED',
+  COMPLETED = 'COMPLETED',
   CANCELLED = 'CANCELLED',
   REFUNDED = 'REFUNDED'
 }
@@ -21,13 +22,20 @@ export interface OrderItem {
 
 export interface Order {
   id: string
+  orderNumber: string
   consumerId: string
-  consumerName: string
+  consumer?: {
+    id: string
+    username?: string
+    email?: string
+    phone?: string
+  }
   status: OrderStatus
   totalAmount: number
   items: OrderItem[]
   address: string
   phone: string
+  paymentMethod?: string
   createdAt: string
   updatedAt: string
   paidAt?: string
@@ -40,6 +48,7 @@ export interface Order {
 export interface OrderListParams {
   page?: number
   pageSize?: number
+  orderNumber?: string
   consumerId?: string
   status?: OrderStatus
   startDate?: string

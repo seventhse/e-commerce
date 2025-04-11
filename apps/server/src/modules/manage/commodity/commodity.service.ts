@@ -98,6 +98,7 @@ export class CommodityService {
     this.logger.debug(`Finding commodities page ${page} with size ${pageSize}`);
 
     const where = buildWhere(searchDto);
+    throw new BusinessException(400, '暂不支持分页查询');
 
     const [results, total] = await Promise.all([
       this.prisma.commodity.findMany({

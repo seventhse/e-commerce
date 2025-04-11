@@ -1,12 +1,10 @@
 import {
   IconCategory,
   IconLayoutDashboard,
-  IconMapPin,
   IconReceipt,
   IconShoppingCart,
   IconUsers,
   IconUsersGroup,
-  IconShieldLock
 } from '@tabler/icons-react'
 import { type SidebarData } from '../types'
 
@@ -61,19 +59,9 @@ export const sidebarData: SidebarData = {
           icon: IconUsers,
         },
         {
-          title: '角色管理',
-          url: '/roles',
-          icon: IconShieldLock,
-        },
-        {
           title: '客户管理',
           url: '/consumers',
           icon: IconUsersGroup,
-        },
-        {
-          title: '地址管理',
-          url: '/addresses',
-          icon: IconMapPin,
         },
       ],
     },

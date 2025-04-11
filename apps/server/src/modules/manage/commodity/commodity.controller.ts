@@ -48,7 +48,7 @@ export class CommodityController {
   @ApiResponse({ status: 400, description: '请求参数错误' })
   @Post('/create')
   async create(@Body() createDto: CreateCommodityDto) {
-    return await this.commodityService.create(createDto);
+    await this.commodityService.create(createDto);
   }
 
   @ApiOperation({ summary: '更新商品' })
@@ -57,7 +57,7 @@ export class CommodityController {
   @ApiResponse({ status: 404, description: '商品不存在' })
   @Post('/update')
   async update(@Body() updateDto: UpdateCommodityDto) {
-    return await this.commodityService.update(updateDto);
+    await this.commodityService.update(updateDto);
   }
 
   @ApiOperation({ summary: '删除商品' })
@@ -66,6 +66,6 @@ export class CommodityController {
   @ApiResponse({ status: 500, description: '删除商品失败' })
   @Post('/delete')
   async delete(@Body('id') id: string) {
-    return await this.commodityService.delete(id);
+    await this.commodityService.delete(id);
   }
 }

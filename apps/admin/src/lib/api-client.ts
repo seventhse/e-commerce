@@ -30,6 +30,11 @@ apiClient.interceptors.request.use(
 // Response interceptor for handling errors
 apiClient.interceptors.response.use(
   (response) => {
+    const { data } = response
+    if (data.code !== 200) {
+      return Promise.reject(data)
+    }
+
     return response
   },
   async (error: AxiosError) => {

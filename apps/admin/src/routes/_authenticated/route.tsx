@@ -41,13 +41,14 @@ function RouteComponent() {
         try {
           const userInfo = await AuthService.getUserInfo()
           auth.setUser(userInfo)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
           // If fetching user info fails, the token might be invalid
           auth.reset()
           toast({
             variant: 'destructive',
-            title: 'Session expired',
-            description: 'Please sign in again.',
+            title: '登录状态已过期',
+            description: '请重新登录',
           })
           window.location.href = '/sign-in'
         }

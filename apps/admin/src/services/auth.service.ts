@@ -17,6 +17,7 @@ export interface UserInfo {
   email: string
   realName: string
   isActive: boolean
+  avatar?: string
   roles?: string[]
   permissions?: string[]
 }

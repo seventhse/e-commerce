@@ -1,22 +1,13 @@
+import { UserInfo } from '@/services'
 import Cookies from 'js-cookie'
 import { create } from 'zustand'
 
 const ACCESS_TOKEN = 'thisisjustarandomstring'
 
-interface AuthUser {
-  id: string
-  username: string
-  email: string
-  realName: string
-  isActive: boolean
-  roles?: { id: string; name: string }[]
-  permissions?: string[]
-}
-
 interface AuthState {
   auth: {
-    user: AuthUser | null
-    setUser: (user: AuthUser | null) => void
+    user: UserInfo | null
+    setUser: (user: UserInfo | null) => void
     accessToken: string
     setAccessToken: (accessToken: string) => void
     resetAccessToken: () => void
@@ -55,4 +46,4 @@ export const useAuthStore = create<AuthState>()((set) => {
   }
 })
 
-// export const useAuth = () => useAuthStore((state) => state.auth)
+export const useAuth = () => useAuthStore((state) => state.auth)
